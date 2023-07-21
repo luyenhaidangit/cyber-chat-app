@@ -14,7 +14,11 @@ class GuestController extends Controller
      */
     public function login()
     {
-        return view('guest.login');
+        $data = [
+            'title' => 'Đăng nhập | CyberChat Ứng dụng nhắn tin trực tuyến',
+        ];
+
+        return view('guest.login')->with($data);
     }
 
     /**
@@ -43,7 +47,7 @@ class GuestController extends Controller
      */
     public function register()
     {
-        return view('register');
+        return view('guest.register');
     }
 
     /**
@@ -58,17 +62,91 @@ class GuestController extends Controller
         // ...
 
         // After successful registration, you can redirect to the login page or any other page
-        return redirect()->route('login')->with('success', 'Registration successful. Please login.');
+        return redirect()->route('login')->with('success', 'Đăng ký thành công. Vui lòng đăng nhập.');
     }
 
     /**
      * Logout the user.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     *  @return \Illuminate\Contracts\View\View
      */
     public function logout()
     {
-        Auth::logout();
-        return redirect()->route('login');
+        return view('guest.logout');
+    }
+
+    /**
+     * Show the change password form.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function changePassword()
+    {
+        return view('guest.change_password');
+    }
+
+    /**
+     * Process the change password form submission.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postChangePassword(Request $request)
+    {
+        // Your change password logic here
+        // ...
+
+        // After successful password change, you can redirect to any page
+        return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công. Vui lòng đăng nhập lại.');
+    }
+
+    /**
+     * Show the lock screen form.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function lockScreen()
+    {
+        return view('guest.lock_screen');
+    }
+
+    /**
+     * Process the lock screen form submission.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postLockScreen(Request $request)
+    {
+        // Your lock screen logic here
+        // ...
+
+        // After successful lock screen, you can redirect to any page
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Show the password recovery form.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function recover()
+    {
+        return view('guest.recover');
+    }
+
+    /**
+     * Process the password recovery form submission.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postRecover(Request $request)
+    {
+        // Your password recovery logic here
+        // ...
+
+        // After successful recovery request, you can redirect to any page
+        return redirect()->route('login')->with('success', 'Yêu cầu khôi phục mật khẩu đã được gửi đến email của bạn.');
     }
 }
