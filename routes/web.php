@@ -11,4 +11,5 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', 'App\Http\Controllers\GuestController@register')->name('register');
     Route::get('/logout', 'App\Http\Controllers\GuestController@logout')->name('logout');
     Route::get('/recover', 'App\Http\Controllers\GuestController@recover')->name('recover');
+    Route::get('/index', 'App\Http\Controllers\ChatController@index')->name('index');
 });
