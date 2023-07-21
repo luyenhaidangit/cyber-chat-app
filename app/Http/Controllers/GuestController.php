@@ -82,7 +82,7 @@ class GuestController extends Controller
      */
     public function changePassword()
     {
-        return view('guest.change_password');
+        return view('guest.change-password');
     }
 
     /**
@@ -107,7 +107,7 @@ class GuestController extends Controller
      */
     public function lockScreen()
     {
-        return view('guest.lock_screen');
+        return view('guest.lock-screen');
     }
 
     /**
