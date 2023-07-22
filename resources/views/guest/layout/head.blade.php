@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>{{ $title }}</title>
+<title>{{ $title }} | CyberChat Ứng dụng nhắn tin trực tuyến</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Doot - Responsive Chat App Template in HTML. A fully featured HTML chat messenger template in Bootstrap 5"
     name="description" />

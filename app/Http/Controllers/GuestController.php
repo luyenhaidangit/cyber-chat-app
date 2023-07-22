@@ -4,29 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Guest\GuestRegisterRequest;
+use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Facades\UserFacade;
+
 
 class GuestController extends Controller
 {
-    /**
-     * Show the login form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+    protected $userService;
+
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function login()
     {
         $data = [
-            'title' => 'Đăng nhập | CyberChat Ứng dụng nhắn tin trực tuyến',
+            'title' => 'Đăng nhập',
         ];
 
         return view('guest.login')->with($data);
     }
 
-    /**
-     * Process the login form submission.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function postLogin(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -40,29 +40,27 @@ class GuestController extends Controller
         }
     }
 
-    /**
-     * Show the registration form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function register()
     {
-        return view('guest.register');
+        $data = [
+            'title' => 'Đăng ký',
+        ];
+
+        return view('guest.register')->with($data);
     }
 
-    /**
-     * Process the registration form submission.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postRegister(Request $request)
+    public function postRegister(GuestRegisterRequest $request)
     {
-        // Your registration logic here
-        // ...
+        // $data = $request->guestRegister();
 
-        // After successful registration, you can redirect to the login page or any other page
-        return redirect()->route('login')->with('success', 'Đăng ký thành công. Vui lòng đăng nhập.');
+        // $user = $this->userService->guestRegister($data);
+
+        // User::create($user);
+        // return response()->json("Ok");
+
+        // return redirect()->route('login')->with('success', 'Đăng ký thành công. Vui lòng đăng nhập.');
+        $request->guestRegister()->status = 1;
+        return response()->json(UserFacade::guestRegister($request));
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Role;
 use App\Models\Conversation;
 use App\Models\Message;
+use Ramsey\Uuid\Uuid;
 
 class User extends Model
 {
@@ -25,6 +26,15 @@ class User extends Model
     ];
 
     protected $dates = ['deleted_at', 'email_verified_at'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->uuid = Uuid::uuid4()->toString();
+        });
+    }
 
     public function roles()
     {

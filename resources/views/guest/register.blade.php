@@ -3,7 +3,7 @@
 @section('content')
     <div class="text-center mb-5">
         <h3>Đăng Ký Tài Khoản</h3>
-        <p class="text-muted">Nhận tài khoản Doot miễn phí của bạn ngay bây giờ.</p>
+        <p class="text-muted">Nhận tài khoản CyberChat miễn phí của bạn ngay bây giờ.</p>
     </div>
     <form class="needs-validation" novalidate action="{{ route('register') }}" method="POST">
         @csrf
@@ -33,8 +33,9 @@
         </div>
 
         <div class="mb-4">
-            <p class="mb-0">Bằng cách đăng ký, bạn đồng ý với <a href="#" class="text-primary">Điều khoản sử
-                    dụng</a> của Doot</p>
+            <p class="mb-0">Bằng cách đăng ký, bạn đồng ý với <a href="javascript:void(0)" class="text-primary">Điều khoản
+                    sử
+                    dụng</a> của CyberChat</p>
         </div>
 
         <div class="mb-3">
