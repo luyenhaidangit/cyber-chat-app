@@ -3,14 +3,9 @@
 namespace App\Http\Requests\Guest;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
 
 class GuestRegisterRequest extends FormRequest
 {
-    public $email;
-    public $username;
-    public $password;
-    public $status;
     public function authorize()
     {
         return true;
@@ -36,15 +31,5 @@ class GuestRegisterRequest extends FormRequest
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ];
-    }
-
-    public function guestRegister()
-    {
-        $this->email = $this->input('email');
-        $this->username = $this->input('username');
-        $this->status = 1;
-        $this->password = Hash::make($this->input('password'));
-
-        return $this;
     }
 }

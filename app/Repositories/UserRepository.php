@@ -15,6 +15,7 @@ class UserRepository implements UserRepositoryInterface
             'username' => $request->username,
             'password' => $request->password,
             'status' => $request->status,
+            'email_verification_token' => $request->email_verification_token
         ]);
     }
 }

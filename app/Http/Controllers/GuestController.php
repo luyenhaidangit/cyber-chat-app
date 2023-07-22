@@ -51,16 +51,8 @@ class GuestController extends Controller
 
     public function postRegister(GuestRegisterRequest $request)
     {
-        // $data = $request->guestRegister();
-
-        // $user = $this->userService->guestRegister($data);
-
-        // User::create($user);
-        // return response()->json("Ok");
-
-        // return redirect()->route('login')->with('success', 'Đăng ký thành công. Vui lòng đăng nhập.');
-        $request->guestRegister()->status = 1;
-        return response()->json(UserFacade::guestRegister($request));
+        $user = UserFacade::guestRegister($request);
+        return response()->api($user, true, 200, 'Người dùng đăng ký thành công!');
     }
 
     /**
