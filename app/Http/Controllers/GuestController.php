@@ -18,6 +18,7 @@ class GuestController extends Controller
         $this->userService = $userService;
     }
 
+    //Login
     public function login()
     {
         $data = [
@@ -40,6 +41,7 @@ class GuestController extends Controller
         }
     }
 
+    //Register
     public function register()
     {
         $data = [

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyUserEmail;
 use Illuminate\Support\Str;
+use Exception;
+use App\Exceptions\ApiException;
 
 class UserService implements UserServiceInterface
 {
@@ -27,12 +29,16 @@ class UserService implements UserServiceInterface
             'email_verification_token' => Str::random(40),
         ]);
 
-        $user = $this->userRepository->guestRegister($request);
+        try {
+            $user = $this->userRepository->guestRegister($request);
 
-        if ($user) {
-            Mail::to($request->email)->send(new VerifyUserEmail($user->email_verification_token));
+            if ($user) {
+                Mail::to($request->email)->send(new VerifyUserEmail($user->email_verification_token));
+            }
+
+            return $user;
+        } catch (Exception $e) {
+            throw new ApiException('Có lỗi xảy ra!', $e->getMessage(), 500);
         }
-
-        return $user;
     }
 }

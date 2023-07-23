@@ -18,4 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', 'App\Http\Controllers\GuestController@postRegister');
+Route::group([], function () {
+    Route::post('/register', 'App\Http\Controllers\GuestController@postRegister');
+    Route::get('/verify-email', 'App\Http\Controllers\GuestController@verifyEmail');
+});
