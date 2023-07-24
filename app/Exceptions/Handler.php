@@ -50,14 +50,14 @@ class Handler extends ExceptionHandler
         });
     }
 
-    protected function invalidJson($request, ValidationException $exception)
-    {
-        return response()->json([
-            'data' => null,
-            'status' => false,
-            'code' => $exception->status,
-            'message' => 'Dữ liệu đầu vào không hợp lệ!',
-            'errors' => $exception->errors()
-        ], $exception->status);
-    }
+    // protected function invalidJson($request, ValidationException $exception)
+    // {
+    //     return response()->json([
+    //         'data' => null,
+    //         'status' => false,
+    //         'code' => $exception->status,
+    //         'message' => 'Dữ liệu đầu vào không hợp lệ!',
+    //         'errors' => $exception->errors()
+    //     ], $exception->status);
+    // }
 }

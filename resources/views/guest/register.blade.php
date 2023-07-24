@@ -10,26 +10,32 @@
         <div class="mb-3">
             <label for="useremail" class="form-label">Email</label>
             <input type="email" class="form-control" id="useremail" name="email" placeholder="Nhập email" required>
-            <div class="invalid-feedback">
-                Vui lòng nhập email
-            </div>
+            @error('email')
+                <div class="text-danger mt-1">
+                    <span style="font-size: 12px"> {{ $message }}</span>
+                </div>
+            @enderror
         </div>
         <div class="mb-3">
             <label for="username" class="form-label">Tên tài khoản</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên tài khoản"
                 required>
-            <div class="invalid-feedback">
-                Vui lòng nhập tên tài khoản
-            </div>
+            @error('username')
+                <div class="text-danger mt-1">
+                    <span style="font-size: 12px"> {{ $message }}</span>
+                </div>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label for="userpassword" class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" id="userpassword" name="password" placeholder="Nhập mật khẩu"
                 required>
-            <div class="invalid-feedback">
-                Vui lòng nhập mật khẩu
-            </div>
+            @error('password')
+                <div class="text-danger mt-1">
+                    <span style="font-size: 12px"> {{ $message }}</span>
+                </div>
+            @enderror
         </div>
 
         <div class="mb-4">

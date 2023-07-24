@@ -5,6 +5,11 @@
         <h3>Xin chào !</h3>
         <p class="text-muted">Đăng nhập để tiếp tục với CyberChat.</p>
     </div>
+    @if (session('success'))
+        <div class="alert alert-info text-center my-4" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
     <form action="{{ route('login') }}" method="POST">
         @csrf
         <div class="mb-3">
