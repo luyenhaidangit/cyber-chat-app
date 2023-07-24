@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
+use App\Http\Requests\Guest\VerifyEmailRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
 use Exception;
@@ -57,6 +58,22 @@ class GuestController extends Controller
         try {
             $user = UserFacade::guestRegister($request);
             return response()->api($user, true, 200, 'Người dùng đăng ký thành công!');
+        } catch (Exception $e) {
+            throw new ApiException('Xuất hiện lỗi khi xử lý phản hồi!', $e->getMessage(), 500);
+        }
+    }
+
+    public function verifyEmail(VerifyEmailRequest $request)
+    {
+        $email = $request->input('email');
+        $token = $request->input('token');
+        try {
+            $user = UserFacade::verifyEmail($email, $token);
+            if ($user->email_verified_at ?? null) {
+                return response()->api($user, true, 200, 'Người dùng xác nhận tài khoản thành công!');
+            } else {
+                return response()->api($user, true, 401, 'Người dùng xác nhận tài khoản thất bại!');
+            }
         } catch (Exception $e) {
             throw new ApiException('Xuất hiện lỗi khi xử lý phản hồi!', $e->getMessage(), 500);
         }

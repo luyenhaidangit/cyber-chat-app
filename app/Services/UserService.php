@@ -12,6 +12,7 @@ use App\Mail\VerifyUserEmail;
 use Illuminate\Support\Str;
 use Exception;
 use App\Exceptions\ApiException;
+use Illuminate\Support\Carbon;
 
 class UserService implements UserServiceInterface
 {
@@ -39,6 +40,27 @@ class UserService implements UserServiceInterface
             return $user;
         } catch (Exception $e) {
             throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), 500);
+        }
+    }
+
+    public function verifyEmail($email, $token)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email,
+                'email_verification_token' => $token
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verified_at' => Carbon::now(),
+                ]);
+            }
+
+            return $user;
+        } catch (Exception $e) {
+            throw new ApiException('Xuất hiện lỗi khi xử lý logic!', $e->getMessage(), 500);
+            // throw new Exception();
         }
     }
 }
