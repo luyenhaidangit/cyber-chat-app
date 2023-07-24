@@ -59,7 +59,7 @@ class GuestController extends Controller
             $user = UserFacade::guestRegister($request);
             return response()->api($user, true, 200, 'Người dùng đăng ký thành công!');
         } catch (Exception $e) {
-            throw new ApiException('Xuất hiện lỗi khi xử lý phản hồi!', $e->getMessage(), 500);
+            throw new ApiException('Xuất hiện lỗi hệ thống!', $e->getMessage(), $e->getCode());
         }
     }
 
@@ -69,13 +69,13 @@ class GuestController extends Controller
         $token = $request->input('token');
         try {
             $user = UserFacade::verifyEmail($email, $token);
-            if ($user->email_verified_at ?? null) {
+            if ($user && !is_null($user->email_verified_at)) {
                 return response()->api($user, true, 200, 'Người dùng xác nhận tài khoản thành công!');
             } else {
-                return response()->api($user, true, 401, 'Người dùng xác nhận tài khoản thất bại!');
+                return response()->api($user, false, 400, 'Người dùng xác nhận tài khoản thất bại!');
             }
-        } catch (Exception $e) {
-            throw new ApiException('Xuất hiện lỗi khi xử lý phản hồi!', $e->getMessage(), 500);
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
 

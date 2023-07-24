@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Exceptions\ApiException;
-use Illuminate\Database\Eloquent\Model;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -58,8 +57,7 @@ class UserRepository implements UserRepositoryInterface
 
             return $query->first();
         } catch (Exception $e) {
-            DB::rollBack();
-            throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), 500);
+            throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
         }
     }
 }

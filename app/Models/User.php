@@ -23,7 +23,8 @@ class User extends Model
         'status',
         'updated_by',
         'created_by',
-        'email_verification_token'
+        'email_verification_token',
+        'email_verified_at'
     ];
 
     protected $dates = ['deleted_at', 'email_verified_at'];

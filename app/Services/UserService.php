@@ -39,7 +39,7 @@ class UserService implements UserServiceInterface
 
             return $user;
         } catch (Exception $e) {
-            throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), 500);
+            throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), $e->getCode());
         }
     }
 
@@ -51,16 +51,19 @@ class UserService implements UserServiceInterface
                 'email_verification_token' => $token
             ]);
 
-            if ($user) {
+            if ($user && !is_null($user->email_verified_at)) {
+                throw new ApiException($user, true, 200, 'Email người dùng đã kích hoạt trước đó!');
+            }
+
+            if ($user && is_null($user->email_verified_at)) {
                 $this->userRepository->update($user, [
                     'email_verified_at' => Carbon::now(),
                 ]);
             }
 
             return $user;
-        } catch (Exception $e) {
-            throw new ApiException('Xuất hiện lỗi khi xử lý logic!', $e->getMessage(), 500);
-            // throw new Exception();
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
 }
