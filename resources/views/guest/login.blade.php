@@ -10,11 +10,11 @@
             {{ session('success') }}
         </div>
     @endif
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('login.post') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="username" class="form-label">Tên tài khoản</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên tài khoản">
+            <label for="email" class="form-label">Tên tài khoản</label>
+            <input type="text" class="form-control" id="email" name="email" placeholder="Nhập tên tài khoản">
         </div>
 
         <div class="mb-3">

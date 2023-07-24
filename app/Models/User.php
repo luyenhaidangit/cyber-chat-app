@@ -8,8 +8,9 @@ use App\Models\Role;
 use App\Models\Conversation;
 use App\Models\Message;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use SoftDeletes;
 

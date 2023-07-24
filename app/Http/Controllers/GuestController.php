@@ -34,6 +34,20 @@ class GuestController extends Controller
         return view('guest.login')->with($data);
     }
 
+    public function postLogin(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+
+        $result = $this->userService->login($credentials, $remember);
+
+        if ($result) {
+            return redirect()->route('chat');
+        } else {
+            return redirect()->route('login')->with('error', 'Tên tài khoản hoặc mật khẩu không chính xác!');
+        }
+    }
+
     //Register
     public function register()
     {

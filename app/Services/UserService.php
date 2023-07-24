@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Exception;
 use App\Exceptions\ApiException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserService implements UserServiceInterface
 {
@@ -115,6 +116,18 @@ class UserService implements UserServiceInterface
             return $user;
         } catch (ApiException $e) {
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function login($credentials, $remember)
+    {
+        try {
+            if (Auth::attempt($credentials)) {
+                return true;
+            }
+            return false;
+        } catch (ApiException $e) {
+            throw new ApiException(null, false, 500, $e->getMessage());
         }
     }
 }
