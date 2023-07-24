@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
 use App\Http\Requests\Guest\ForgotPasswordRequest;
 use App\Http\Requests\Guest\VerifyEmailRequest;
+use App\Http\Requests\Guest\LoginRequest;
 use App\Http\Requests\Guest\ResetPasswordRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
@@ -31,19 +32,6 @@ class GuestController extends Controller
         ];
 
         return view('guest.login')->with($data);
-    }
-
-    public function postLogin(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Authentication successful
-            return redirect()->intended('/dashboard'); // Redirect to the dashboard or the intended URL after login
-        } else {
-            // Authentication failed
-            return redirect()->back()->withErrors(['message' => 'Invalid credentials']);
-        }
     }
 
     //Register
