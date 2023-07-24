@@ -57,6 +57,7 @@ class UserService implements UserServiceInterface
 
             if ($user && is_null($user->email_verified_at)) {
                 $this->userRepository->update($user, [
+                    'email_verification_token' => null,
                     'email_verified_at' => Carbon::now(),
                 ]);
             }
