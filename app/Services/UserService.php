@@ -38,6 +38,8 @@ class UserService implements UserServiceInterface
                 Mail::to($request->email)->send(new VerifyUserEmail($user->email_verification_token));
             }
 
+            session()->flash('success_message', 'Đăng ký thành công, vui lòng xác nhận email!');
+
             return $user;
         } catch (Exception $e) {
             throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), $e->getCode());
@@ -81,10 +83,10 @@ class UserService implements UserServiceInterface
                     'email_verification_token' => Str::random(40)
                 ]);
 
-                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email_verification_token));
+                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email, $user->email_verification_token));
 
             } else {
-                throw new ApiException(null, true, 400, 'Người dùng với email không tồn tại!');
+                throw new ApiException(null, true, 400, 'Xuất hiện lỗi không tìm thấy người dùng!');
             }
 
             return $user;

@@ -43,7 +43,7 @@
         <p>Xin chào, chúc ngày mới tốt lành!</p>
         <p>Bạn vừa đăng ký tài khoản người dùng tại CyberChat.</p>
         <p>Hãy xác nhận địa chỉ email của bạn bằng cách nhấp vào nút bên dưới:</p>
-        <a href="{{ route('verify_email', ['token' => $email_verification_token]) }}" class="btn">Xác nhận Email</a>
+        <a href="{{ route('login', ['token' => $email_verification_token]) }}" class="btn">Xác nhận Email</a>
         <p>Nếu bạn không thực hiện hành động này, vui lòng bỏ qua email này.</p>
         <p>Xin cảm ơn,</p>
         <p>Ứng dụng nhắn tin CyberChat</p>

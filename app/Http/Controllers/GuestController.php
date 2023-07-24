@@ -26,6 +26,7 @@ class GuestController extends Controller
     {
         $data = [
             'title' => 'Đăng nhập',
+            'success_message' => session('success_message')
         ];
 
         return view('guest.login')->with($data);
@@ -82,6 +83,13 @@ class GuestController extends Controller
     }
 
     //Forgot Password
+    public function recover()
+    {
+        $data = [
+            'title' => 'Đăng nhập',
+        ];
+        return view('guest.recover')->with($data);
+    }
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $email = $request->input('email');
@@ -146,16 +154,6 @@ class GuestController extends Controller
 
         // After successful lock screen, you can redirect to any page
         return redirect()->route('dashboard');
-    }
-
-    /**
-     * Show the password recovery form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function recover()
-    {
-        return view('guest.recover');
     }
 
     /**

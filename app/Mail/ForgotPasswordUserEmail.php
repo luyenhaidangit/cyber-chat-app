@@ -12,7 +12,7 @@ class ForgotPasswordUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(private $email_verification_token)
+    public function __construct(private $email, private $email_verification_token)
     {
 
     }
@@ -29,6 +29,7 @@ class ForgotPasswordUserEmail extends Mailable
         return new Content(
             view: 'guest.forgot-password-user',
             with: [
+                'email' => $this->email,
                 'email_verification_token' => $this->email_verification_token,
             ],
         );
