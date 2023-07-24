@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
+    Route::get('/reset-password', 'App\Http\Controllers\GuestController@resetPassword')->name('reset_password');
     Route::get('/', 'App\Http\Controllers\GuestController@login')->name('login');
     Route::get('/login', 'App\Http\Controllers\GuestController@login')->name('login');
     Route::get('/register', 'App\Http\Controllers\GuestController@register')->name('register');

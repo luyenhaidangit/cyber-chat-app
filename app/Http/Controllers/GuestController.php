@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
+use App\Http\Requests\Guest\ForgotPasswordRequest;
 use App\Http\Requests\Guest\VerifyEmailRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
@@ -63,6 +64,7 @@ class GuestController extends Controller
         }
     }
 
+    //Verify
     public function verifyEmail(VerifyEmailRequest $request)
     {
         $email = $request->input('email');
@@ -79,11 +81,18 @@ class GuestController extends Controller
         }
     }
 
-    /**
-     * Logout the user.
-     *
-     *  @return \Illuminate\Contracts\View\View
-     */
+    //Forgot Password
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $email = $request->input('email');
+        try {
+            UserFacade::forgotPassword($email);
+            return response()->api(null, true, 200, 'Yêu cầu quên mật khẩu thành công!');
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
+
     public function logout()
     {
         return view('guest.logout');

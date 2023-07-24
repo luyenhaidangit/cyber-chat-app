@@ -9,6 +9,7 @@ use App\Constants\StatusConstants;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyUserEmail;
+use App\Mail\ForgotPasswordUserEmail;
 use Illuminate\Support\Str;
 use Exception;
 use App\Exceptions\ApiException;
@@ -60,6 +61,30 @@ class UserService implements UserServiceInterface
                     'email_verification_token' => null,
                     'email_verified_at' => Carbon::now(),
                 ]);
+            }
+
+            return $user;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function forgotPassword($email)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verification_token' => Str::random(40)
+                ]);
+
+                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email_verification_token));
+
+            } else {
+                throw new ApiException(null, true, 400, 'Người dùng với email không tồn tại!');
             }
 
             return $user;
