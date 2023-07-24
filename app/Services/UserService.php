@@ -38,7 +38,7 @@ class UserService implements UserServiceInterface
 
             return $user;
         } catch (Exception $e) {
-            throw new ApiException('Có lỗi xảy ra!', $e->getMessage(), 500);
+            throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), 500);
         }
     }
 }

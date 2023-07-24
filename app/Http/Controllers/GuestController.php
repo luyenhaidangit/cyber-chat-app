@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
-
+use Exception;
+use App\Exceptions\ApiException;
 
 class GuestController extends Controller
 {
@@ -53,8 +54,12 @@ class GuestController extends Controller
 
     public function postRegister(GuestRegisterRequest $request)
     {
-        $user = UserFacade::guestRegister($request);
-        return response()->api($user, true, 200, 'Người dùng đăng ký thành công!');
+        try {
+            $user = UserFacade::guestRegister($request);
+            return response()->api($user, true, 200, 'Người dùng đăng ký thành công!');
+        } catch (Exception $e) {
+            throw new ApiException('Xuất hiện lỗi khi xử lý phản hồi!', $e->getMessage(), 500);
+        }
     }
 
     /**
