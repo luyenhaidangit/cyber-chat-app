@@ -9,4 +9,5 @@ interface UserServiceInterface
     public function guestRegister(GuestRegisterRequest $request);
     public function verifyEmail($email, $token);
     public function forgotPassword($email);
+    public function resetPassword($email, $token, $password);
 }

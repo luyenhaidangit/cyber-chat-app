@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
 use App\Http\Requests\Guest\ForgotPasswordRequest;
 use App\Http\Requests\Guest\VerifyEmailRequest;
+use App\Http\Requests\Guest\ResetPasswordRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
 use Exception;
@@ -86,7 +87,7 @@ class GuestController extends Controller
     public function recover()
     {
         $data = [
-            'title' => 'Đăng nhập',
+            'title' => 'Quên mật khẩu',
         ];
         return view('guest.recover')->with($data);
     }
@@ -101,21 +102,37 @@ class GuestController extends Controller
         }
     }
 
+    //Change password
+    public function changePassword()
+    {
+        $data = [
+            'title' => 'Xác nhận thay đổi mật khẩu',
+        ];
+        return view('guest.change-password')->with($data);
+    }
+
+    public function submitChangePassword(ResetPasswordRequest $request)
+    {
+        $email = $request->input('email');
+        $token = $request->input('token');
+        $password = $request->input('password');
+        try {
+            $user = UserFacade::resetPassword($email, $token, $password);
+            if ($user) {
+                return response()->api(null, true, 200, 'Yêu cầu thay đổi mật khẩu thành công!');
+            } else {
+                return response()->api(null, false, 400, 'Yêu cầu thay đổi mật khẩu thất bại!');
+            }
+
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
+
     public function logout()
     {
         return view('guest.logout');
     }
-
-    /**
-     * Show the change password form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function changePassword()
-    {
-        return view('guest.change-password');
-    }
-
     /**
      * Process the change password form submission.
      *

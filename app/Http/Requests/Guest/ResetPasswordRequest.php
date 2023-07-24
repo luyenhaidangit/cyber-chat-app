@@ -4,7 +4,7 @@ namespace App\Http\Requests\Guest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ForgotPasswordRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,6 +15,8 @@ class ForgotPasswordRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
+            'token' => 'required|string',
+            'password' => 'required|min:6',
         ];
     }
 
@@ -24,6 +26,9 @@ class ForgotPasswordRequest extends FormRequest
             'email.required' => 'Vui lòng nhập địa chỉ email.',
             'email.email' => 'Vui lòng nhập đúng định dạng email.',
             'email.exists' => 'Email không tồn tại trong hệ thống.',
+            'token.required' => 'Vui lòng nhập token.',
+            'password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
         ];
     }
 }

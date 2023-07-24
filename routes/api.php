@@ -22,4 +22,5 @@ Route::group([], function () {
     Route::post('/register', 'App\Http\Controllers\GuestController@postRegister');
     Route::get('/verify-email', 'App\Http\Controllers\GuestController@verifyEmail');
     Route::post('/forgot-password', 'App\Http\Controllers\GuestController@forgotPassword');
+    Route::post('/change-password', 'App\Http\Controllers\GuestController@submitChangePassword');
 });

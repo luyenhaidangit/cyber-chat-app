@@ -94,4 +94,27 @@ class UserService implements UserServiceInterface
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
+
+    public function resetPassword($email, $token, $password)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email,
+                'email_verification_token' => $token
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verification_token' => null,
+                    'password' => Hash::make($password),
+                ]);
+            } else {
+                throw new ApiException(null, true, 400, 'Xuất hiện lỗi không tìm thấy người dùng!');
+            }
+
+            return $user;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
 }
