@@ -130,4 +130,12 @@ class UserService implements UserServiceInterface
             throw new ApiException(null, false, 500, $e->getMessage());
         }
     }
+    public function logout()
+    {
+        try {
+            Auth::logout();
+        } catch (ApiException $e) {
+            throw new ApiException(null, false, 500, $e->getMessage());
+        }
+    }
 }

@@ -31,7 +31,8 @@
         </div>
 
         <div class="form-check form-check-info font-size-16">
-            <input class="form-check-input" type="checkbox" id="remember-check">
+            <input class="form-check-input" type="checkbox" id="remember-check" name="remember"
+                {{ old('remember') ? 'checked' : '' }}>
             <label class="form-check-label font-size-14" for="remember-check">
                 Lưu đăng nhập
             </label>

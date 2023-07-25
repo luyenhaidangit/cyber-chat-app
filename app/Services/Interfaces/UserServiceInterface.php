@@ -11,4 +11,5 @@ interface UserServiceInterface
     public function forgotPassword($email);
     public function resetPassword($email, $token, $password);
     public function login($credentials, $remember);
+    public function logout();
 }

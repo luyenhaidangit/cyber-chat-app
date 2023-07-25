@@ -48,6 +48,16 @@ class GuestController extends Controller
         }
     }
 
+    //Logout
+    public function postLogout()
+    {
+        $this->userService->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Bạn đã đăng xuất thành công!');
+    }
+
     //Register
     public function register()
     {
