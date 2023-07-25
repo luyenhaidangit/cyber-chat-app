@@ -16,10 +16,12 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
-    Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
-    Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
+    Route::group(['middleware' => 'lock_screen'], function () {
+        Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
+        Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
+        Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
+        Route::get('/chat', 'App\Http\Controllers\ChatController@index')->name('chat');
+    });
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
     Route::post('/lock-screen', 'App\Http\Controllers\GuestController@postLockScreen')->name('lock_screen.post');
-    Route::get('/chat', 'App\Http\Controllers\ChatController@index')->name('chat');
 });

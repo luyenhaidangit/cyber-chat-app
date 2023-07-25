@@ -10,4 +10,9 @@
         @csrf
         <button type="submit">Khoá đăng nhập</button>
     </form>
+    @if (session('lock_screen'))
+        <div class="text-danger mt-1">
+            <span style="font-size: 12px">{{ session('lock_screen') }}</span>
+        </div>
+    @endif
 @endsection

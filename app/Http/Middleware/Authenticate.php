@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
@@ -18,4 +20,13 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+
+    // public function handle($request, Closure $next, ...$guards)
+    // {
+    //     if (Auth::check() && session('lock_screen', false)) {
+    //         return redirect()->route('lock_screen');
+    //     } else {
+    //         return $next($request);
+    //     }
+    // }
 }

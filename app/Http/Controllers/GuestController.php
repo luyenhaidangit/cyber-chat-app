@@ -37,7 +37,6 @@ class GuestController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-
         $result = $this->userService->login($credentials, $remember);
 
         if ($result) {

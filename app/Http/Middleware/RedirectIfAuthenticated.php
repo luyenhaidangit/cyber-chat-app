@@ -23,9 +23,6 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                if (Auth::check() && session('lock_screen', true)) {
-                    return redirect()->route('lock_screen');
-                }
                 return redirect(RouteServiceProvider::USERINDEX);
             }
         }
