@@ -15,6 +15,11 @@
         <div class="mb-3">
             <label for="email" class="form-label">Tên tài khoản</label>
             <input type="text" class="form-control" id="email" name="email" placeholder="Nhập tên tài khoản">
+            @error('email')
+                <div class="text-danger mt-1">
+                    <span style="font-size: 12px"> {{ $message }}</span>
+                </div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -27,6 +32,11 @@
                     name="password">
                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button"
                     id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                @error('password')
+                    <div class="text-danger mt-1">
+                        <span style="font-size: 12px"> {{ $message }}</span>
+                    </div>
+                @enderror
             </div>
         </div>
 

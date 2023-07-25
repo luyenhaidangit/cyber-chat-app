@@ -63,7 +63,6 @@ class GuestController extends Controller
 
         return redirect()->route('logout');
     }
-
     //Register
     public function register()
     {
