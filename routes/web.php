@@ -26,4 +26,5 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
     Route::post('/lock-screen', 'App\Http\Controllers\GuestController@postLockScreen')->name('lock_screen.post');
+    Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
 });

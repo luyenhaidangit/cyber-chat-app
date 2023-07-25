@@ -32,6 +32,13 @@
     </form><!-- end form -->
 
     <div class="mt-5 text-center text-muted">
-        <p>Không phải bạn? <a href="{{ route('login') }}" class="fw-medium text-decoration-underline">Đăng nhập</a></p>
+        <div>
+            Không phải bạn?
+            <form class="d-inline" action="{{ route('logout.post') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn text-primary px-0 fw-medium text-decoration-underline">Đăng
+                    xuất</button>
+            </form>
+        </div>
     </div>
 @endsection
