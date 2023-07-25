@@ -70,42 +70,19 @@ class UserService implements UserServiceInterface
         }
     }
 
-    public function forgotPassword($email)
-    {
-        try {
-            $user = $this->userRepository->findOneByConditions([
-                'email' => $email
-            ]);
-
-            if ($user) {
-                $this->userRepository->update($user, [
-                    'email_verification_token' => Str::random(40)
-                ]);
-
-                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email, $user->email_verification_token));
-
-            } else {
-                throw new ApiException(null, true, 400, 'Xuất hiện lỗi không tìm thấy người dùng!');
-            }
-
-            return $user;
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
-        }
-    }
-
     public function resetPassword($email, $token, $password)
     {
         try {
             $user = $this->userRepository->findOneByConditions([
                 'email' => $email,
-                'email_verification_token' => $token
+                'email_verification_token' => $token,
             ]);
 
             if ($user) {
                 $this->userRepository->update($user, [
                     'email_verification_token' => null,
                     'password' => Hash::make($password),
+                    'email_verified_at' => $user->email_verified_at ?: Carbon::now()
                 ]);
             } else {
                 throw new ApiException(null, true, 400, 'Xuất hiện lỗi không tìm thấy người dùng!');
@@ -128,6 +105,7 @@ class UserService implements UserServiceInterface
             throw new ApiException(null, false, 500, $e->getMessage());
         }
     }
+
     public function logout()
     {
         try {
@@ -150,6 +128,29 @@ class UserService implements UserServiceInterface
             }
         } catch (ApiException $e) {
             throw new ApiException(null, false, 500, $e->getMessage());
+        }
+    }
+
+    public function recover($email)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verification_token' => Str::random(40)
+                ]);
+
+                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email, $user->email_verification_token));
+
+            } else {
+                throw new ApiException(null, true, 400, 'Xuất hiện lỗi không tìm thấy người dùng!');
+            }
+            return true;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
 }

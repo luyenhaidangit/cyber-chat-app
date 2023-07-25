@@ -11,12 +11,14 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', 'App\Http\Controllers\GuestController@register')->name('register');
     Route::post('/register', 'App\Http\Controllers\GuestController@postRegister')->name('register.post');
     Route::get('/verify-email', 'App\Http\Controllers\GuestController@verifyEmail')->name('verify_email');
-    Route::get('/reset-password', 'App\Http\Controllers\GuestController@resetPassword')->name('reset_password');
     Route::get('/recover', 'App\Http\Controllers\GuestController@recover')->name('recover');
+    Route::post('/recover', 'App\Http\Controllers\GuestController@postRecover')->name('recover.post');
+    Route::get('/reset-password', 'App\Http\Controllers\GuestController@changePassword')->name('reset_password');
+    Route::post('/reset-password', 'App\Http\Controllers\GuestController@submitChangePassword')->name('reset_password.post');
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::group(['middleware' => 'lock_screen'], function () {
+    Route::group(['middleware' => 'auth_normal'], function () {
         Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
         Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
         Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');

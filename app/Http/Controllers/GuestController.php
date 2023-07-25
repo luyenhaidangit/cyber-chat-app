@@ -10,6 +10,7 @@ use App\Http\Requests\Guest\VerifyEmailRequest;
 use App\Http\Requests\Guest\LoginRequest;
 use App\Http\Requests\Guest\ResetPasswordRequest;
 use App\Http\Requests\Guest\OpenLockScreenRequest;
+use App\Http\Requests\Guest\RecoverRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
 use App\Exceptions\ApiException;
@@ -57,6 +58,9 @@ class GuestController extends Controller
     public function postLogout()
     {
         $this->userService->logout();
+        if (session('lock_screen')) {
+            session(['lock_screen' => false]);
+        }
         session()->invalidate();
         session()->regenerateToken();
 
@@ -124,8 +128,7 @@ class GuestController extends Controller
         }
         return redirect()->route('lock_screen')->with('error', 'Mật khẩu không chính xác, vui lòng thử lại!');
     }
-
-    //Forgot Password
+    //Recover
     public function recover()
     {
         $data = [
@@ -133,17 +136,20 @@ class GuestController extends Controller
         ];
         return view('guest.recover')->with($data);
     }
-    public function forgotPassword(ForgotPasswordRequest $request)
+    public function postRecover(RecoverRequest $request)
     {
         $email = $request->input('email');
         try {
-            UserFacade::forgotPassword($email);
-            return response()->api(null, true, 200, 'Yêu cầu quên mật khẩu thành công!');
+            $result = $this->userService->recover($email);
+            if ($result) {
+                return redirect()->route('recover')->with('success', 'Yêu cầu quên mật khẩu thành công, truy cập đường dẫn tại email gửi đến!');
+            } else {
+                return redirect()->route('recover')->with('error', 'Yêu cầu quên mật khẩu thất bại, có lỗi xảy ra!');
+            }
         } catch (ApiException $e) {
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
-
     //Change password
     public function changePassword()
     {
@@ -158,52 +164,16 @@ class GuestController extends Controller
         $email = $request->input('email');
         $token = $request->input('token');
         $password = $request->input('password');
-        // try {
-        //     $user = UserFacade::resetPassword($email, $token, $password);
-        //     if ($user) {
-        //         return response()->api(null, true, 200, 'Yêu cầu thay đổi mật khẩu thành công!');
-        //     } else {
-        //         return response()->api(null, false, 400, 'Yêu cầu thay đổi mật khẩu thất bại!');
-        //     }
+        try {
+            $user = UserFacade::resetPassword($email, $token, $password);
+            if ($user) {
+                return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công, đăng nhập để tiếp tục!');
+            } else {
+                return redirect()->route('reset_password')->with('error', 'Đổi mật khẩu thất bại, thử lại!');
+            }
 
-        // } catch (ApiException $e) {
-        //     throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
-        // }
-    }
-    /**
-     * Process the change password form submission.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postChangePassword(Request $request)
-    {
-        // Your change password logic here
-        // ...
-
-        // After successful password change, you can redirect to any page
-        return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công. Vui lòng đăng nhập lại.');
-    }
-
-    /**
-     * Show the lock screen form.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-
-
-    /**
-     * Process the password recovery form submission.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postRecover(Request $request)
-    {
-        // Your password recovery logic here
-        // ...
-
-        // After successful recovery request, you can redirect to any page
-        return redirect()->route('login')->with('success', 'Yêu cầu khôi phục mật khẩu đã được gửi đến email của bạn.');
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
     }
 }
