@@ -136,4 +136,20 @@ class UserService implements UserServiceInterface
             throw new ApiException(null, false, 500, $e->getMessage());
         }
     }
+
+    public function openLockScreen($password)
+    {
+        try {
+            if (Auth::check()) {
+                if (Auth::attempt(['email' => Auth::user()->email, 'password' => $password])) {
+                    return true;
+                }
+                return false;
+            } else {
+                return false;
+            }
+        } catch (ApiException $e) {
+            throw new ApiException(null, false, 500, $e->getMessage());
+        }
+    }
 }

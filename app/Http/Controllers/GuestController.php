@@ -9,9 +9,9 @@ use App\Http\Requests\Guest\ForgotPasswordRequest;
 use App\Http\Requests\Guest\VerifyEmailRequest;
 use App\Http\Requests\Guest\LoginRequest;
 use App\Http\Requests\Guest\ResetPasswordRequest;
+use App\Http\Requests\Guest\OpenLockScreenRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
-use Exception;
 use App\Exceptions\ApiException;
 
 class GuestController extends Controller
@@ -96,6 +96,36 @@ class GuestController extends Controller
         }
     }
 
+    //LockScreen
+    public function lockScreen()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Đăng nhập',
+            'user' => $user,
+        ];
+        return view('chat.lock-screen')->with($data);
+    }
+
+    public function requestLockScreen()
+    {
+        if (!session('lock_screen')) {
+            session(['lock_screen' => true]);
+        }
+        return redirect()->route('lock_screen');
+    }
+
+    public function postLockScreen(OpenLockScreenRequest $request)
+    {
+        $password = $request->input('password');
+        $result = $this->userService->openLockScreen($password);
+        if ($result) {
+            session(['lock_screen' => false]);
+            return redirect()->route('chat');
+        }
+        return redirect()->route('lock_screen')->with('error', 'Mật khẩu không chính xác, vui lòng thử lại!');
+    }
+
     //Forgot Password
     public function recover()
     {
@@ -129,17 +159,17 @@ class GuestController extends Controller
         $email = $request->input('email');
         $token = $request->input('token');
         $password = $request->input('password');
-        try {
-            $user = UserFacade::resetPassword($email, $token, $password);
-            if ($user) {
-                return response()->api(null, true, 200, 'Yêu cầu thay đổi mật khẩu thành công!');
-            } else {
-                return response()->api(null, false, 400, 'Yêu cầu thay đổi mật khẩu thất bại!');
-            }
+        // try {
+        //     $user = UserFacade::resetPassword($email, $token, $password);
+        //     if ($user) {
+        //         return response()->api(null, true, 200, 'Yêu cầu thay đổi mật khẩu thành công!');
+        //     } else {
+        //         return response()->api(null, false, 400, 'Yêu cầu thay đổi mật khẩu thất bại!');
+        //     }
 
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
-        }
+        // } catch (ApiException $e) {
+        //     throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        // }
     }
     /**
      * Process the change password form submission.
@@ -161,25 +191,7 @@ class GuestController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function lockScreen()
-    {
-        return view('guest.lock-screen');
-    }
 
-    /**
-     * Process the lock screen form submission.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postLockScreen(Request $request)
-    {
-        // Your lock screen logic here
-        // ...
-
-        // After successful lock screen, you can redirect to any page
-        return redirect()->route('dashboard');
-    }
 
     /**
      * Process the password recovery form submission.

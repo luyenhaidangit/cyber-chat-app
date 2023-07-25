@@ -6,4 +6,8 @@
         @csrf
         <button type="submit">Đăng xuất</button>
     </form>
+    <form action="{{ route('request_lock_screen') }}" method="POST">
+        @csrf
+        <button type="submit">Khoá đăng nhập</button>
+    </form>
 @endsection
