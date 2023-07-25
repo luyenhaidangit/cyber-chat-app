@@ -10,10 +10,15 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-error text-center my-4" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
     <form action="{{ route('login.post') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="email" class="form-label">Tên tài khoản</label>
+            <label for="email" class="form-label">Email</label>
             <input type="text" class="form-control" id="email" name="email" placeholder="Nhập tên tài khoản">
             @error('email')
                 <div class="text-danger mt-1">

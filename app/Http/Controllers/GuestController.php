@@ -87,9 +87,9 @@ class GuestController extends Controller
         try {
             $user = UserFacade::verifyEmail($email, $token);
             if ($user && !is_null($user->email_verified_at)) {
-                return response()->api($user, true, 200, 'Người dùng xác nhận tài khoản thành công!');
+                return redirect()->route('login')->with('success', 'Xác nhận email thành công! Đăng nhập để tiếp tục!');
             } else {
-                return response()->api($user, false, 400, 'Người dùng xác nhận tài khoản thất bại!');
+                return redirect()->route('login')->with('error', 'Xác nhận thất bại! Email hoặc token không hợp lệ!');
             }
         } catch (ApiException $e) {
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());

@@ -36,10 +36,8 @@ class UserService implements UserServiceInterface
             $user = $this->userRepository->guestRegister($request);
 
             if ($user) {
-                Mail::to($request->email)->send(new VerifyUserEmail($user->email_verification_token));
+                Mail::to($request->email)->send(new VerifyUserEmail($user->email, $user->email_verification_token));
             }
-
-            session()->flash('success_message', 'Đăng ký thành công, vui lòng xác nhận email!');
 
             return $user;
         } catch (Exception $e) {
