@@ -27,8 +27,7 @@ class GuestController extends Controller
     public function login()
     {
         $data = [
-            'title' => 'Đăng nhập',
-            'success_message' => session('success_message')
+            'title' => 'Đăng nhập'
         ];
 
         return view('guest.login')->with($data);
@@ -49,13 +48,20 @@ class GuestController extends Controller
     }
 
     //Logout
+    public function logout()
+    {
+        $data = [
+            'title' => 'Đăng nhập'
+        ];
+        return view('guest.logout')->with($data);
+    }
     public function postLogout()
     {
         $this->userService->logout();
         session()->invalidate();
         session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Bạn đã đăng xuất thành công!');
+        return redirect()->route('logout');
     }
 
     //Register
@@ -135,11 +141,6 @@ class GuestController extends Controller
         } catch (ApiException $e) {
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
-    }
-
-    public function logout()
-    {
-        return view('guest.logout');
     }
     /**
      * Process the change password form submission.
