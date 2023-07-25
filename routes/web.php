@@ -15,6 +15,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/recover', 'App\Http\Controllers\GuestController@postRecover')->name('recover.post');
     Route::get('/reset-password', 'App\Http\Controllers\GuestController@changePassword')->name('reset_password');
     Route::post('/reset-password', 'App\Http\Controllers\GuestController@submitChangePassword')->name('reset_password.post');
+    Route::get('/admin/login', 'App\Http\Controllers\AdminController@login')->name('admin.login');
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -27,4 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
     Route::post('/lock-screen', 'App\Http\Controllers\GuestController@postLockScreen')->name('lock_screen.post');
     Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
+});
+
+Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
 });

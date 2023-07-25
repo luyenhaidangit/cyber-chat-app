@@ -15,6 +15,7 @@ use Exception;
 use App\Exceptions\ApiException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Constants\RoleConstants;
 
 class UserService implements UserServiceInterface
 {
@@ -97,8 +98,12 @@ class UserService implements UserServiceInterface
     public function login($credentials, $remember)
     {
         try {
-            if (Auth::attempt($credentials)) {
-                return true;
+            if (Auth::attempt($credentials, $remember)) {
+                $user = Auth::user();
+                if ($user->roles->contains('name', RoleConstants::ROLE_ADMIN)) {
+                    return true;
+                }
+                return false;
             }
             return false;
         } catch (ApiException $e) {
