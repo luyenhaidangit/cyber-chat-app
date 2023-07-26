@@ -36,4 +36,13 @@ class AdminController extends Controller
             return redirect()->route('admin.login')->with('error', 'Tên tài khoản hoặc mật khẩu không chính xác!');
         }
     }
+
+    public function postLogout()
+    {
+        $this->userService->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('admin.login');
+    }
 }

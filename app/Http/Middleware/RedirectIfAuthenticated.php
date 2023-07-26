@@ -19,18 +19,18 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        // $guards = empty($guards) ? [null] : $guards;
+        $guards = empty($guards) ? [null] : $guards;
 
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         $userRoles = Auth::user()->roles()->pluck('name')->toArray();
-        //         if (in_array('user', $userRoles)) {
-        //             return redirect(RouteServiceProvider::USERINDEX);
-        //         } else {
-        //             return redirect(RouteServiceProvider::ADMININDEX);
-        //         }
-        //     }
-        // }
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                $userRoles = Auth::user()->roles()->pluck('name')->toArray();
+                if (in_array('user', $userRoles)) {
+                    return redirect(RouteServiceProvider::USERINDEX);
+                } else {
+                    return redirect(RouteServiceProvider::ADMININDEX);
+                }
+            }
+        }
 
         return $next($request);
     }

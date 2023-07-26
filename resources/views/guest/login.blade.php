@@ -11,7 +11,7 @@
         </div>
     @endif
     @if (session('error'))
-        <div class="alert alert-error text-center my-4" role="alert">
+        <div class="alert alert-danger text-center my-4" role="alert">
             {{ session('error') }}
         </div>
     @endif
