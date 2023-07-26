@@ -141,37 +141,54 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        @if ($totalRecords > 0)
-                            <ul class="pagination pagination-rounded">
-                                {{-- Nút trang trước --}}
-                                <li class="page-item {{ $pageIndex == 1 ? 'disabled' : '' }}"
-                                    @if ($pageIndex > 1) data-page-index="{{ $pageIndex - 1 }}" @endif>
-                                    @if ($pageIndex > 1)
-                                        <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
-                                    @else
-                                        <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
-                                    @endif
-                                </li>
-
-                                {{-- Danh sách các trang --}}
-                                @for ($i = 1; $i <= ceil($totalRecords / $pageSize); $i++)
-                                    <li class="page-item {{ $pageIndex == $i ? 'active' : '' }}"
-                                        data-page-index="{{ $i }}">
-                                        <span class="page-link">{{ $i }}</span>
+                        <div class="d-flex">
+                            @if ($totalRecords > 0)
+                                <ul class="pagination pagination-rounded">
+                                    {{-- Nút trang trước --}}
+                                    <li class="page-item {{ $pageIndex == 1 ? 'disabled' : '' }}"
+                                        @if ($pageIndex > 1) data-page-index="{{ $pageIndex - 1 }}" @endif>
+                                        @if ($pageIndex > 1)
+                                            <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
+                                        @else
+                                            <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
+                                        @endif
                                     </li>
-                                @endfor
 
-                                {{-- Nút trang sau --}}
-                                <li class="page-item {{ $pageIndex == ceil($totalRecords / $pageSize) ? 'disabled' : '' }}"
-                                    @if ($pageIndex < ceil($totalRecords / $pageSize)) data-page-index="{{ $pageIndex + 1 }}" @endif>
-                                    @if ($pageIndex < ceil($totalRecords / $pageSize))
-                                        <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
-                                    @else
-                                        <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
-                                    @endif
-                                </li>
-                            </ul>
-                        @endif
+                                    {{-- Danh sách các trang --}}
+                                    @for ($i = 1; $i <= ceil($totalRecords / $pageSize); $i++)
+                                        <li class="page-item {{ $pageIndex == $i ? 'active' : '' }}"
+                                            data-page-index="{{ $i }}">
+                                            <span class="page-link">{{ $i }}</span>
+                                        </li>
+                                    @endfor
+
+                                    {{-- Nút trang sau --}}
+                                    <li class="page-item {{ $pageIndex == ceil($totalRecords / $pageSize) ? 'disabled' : '' }}"
+                                        @if ($pageIndex < ceil($totalRecords / $pageSize)) data-page-index="{{ $pageIndex + 1 }}" @endif>
+                                        @if ($pageIndex < ceil($totalRecords / $pageSize))
+                                            <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
+                                        @else
+                                            <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
+                                        @endif
+                                    </li>
+                                </ul>
+                            @endif
+
+                            <div class="col-sm-6">
+                                <div class="dropdown mt-4 mt-sm-0">
+                                    <span href="#" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        Số bản ghi: {{ request('pageSize') }}<i class="mdi mdi-chevron-down"></i>
+                                    </span>
+
+                                    <div class="dropdown-menu">
+                                        <span class="page-size dropdown-item" data-page-size="10">10</span>
+                                        <span class="page-size dropdown-item" data-page-size="20">20</span>
+                                        <span class="page-size dropdown-item" data-page-size="50">50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -259,6 +276,17 @@
                     var url = new URI(window.location.href);
                     var params = url.search(true);
                     params.pageIndex = pageIndex;
+                    var updatedUrl = url.search(params).toString();
+                    window.location.href = updatedUrl;
+                }
+            });
+
+            $('.page-size').on('click', function() {
+                var pageSize = $(this).data('page-size');
+                if (pageSize) {
+                    var url = new URI(window.location.href);
+                    var params = url.search(true);
+                    params.pageSize = pageSize;
                     var updatedUrl = url.search(params).toString();
                     window.location.href = updatedUrl;
                 }
