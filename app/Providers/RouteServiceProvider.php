@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
     public const USERINDEX = '/chat';
+    public const ADMININDEX = '/admin/dashboard';
     public const USERLOCKSCREEN = '/lock-screen';
 
     /**

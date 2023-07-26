@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="home-btn d-none d-sm-block">
-        <a href="index.html"><i class="mdi mdi-home-variant h2 text-white"></i></a>
+        <a href="{{ route('admin.dashboard') }}"><i class="mdi mdi-home-variant h2 text-white"></i></a>
     </div>
     <div>
         <div class="container-fluid p-0">
@@ -15,7 +15,7 @@
                                     <div>
                                         <div class="text-center">
                                             <div>
-                                                <a href="index.html" class="logo"><img
+                                                <a href="{{ route('admin.dashboard') }}" class="logo"><img
                                                         src="{{ asset('assets-1/images/logo-dark.png') }}" height="20"
                                                         alt="logo"></a>
                                             </div>
@@ -24,27 +24,45 @@
                                             <p class="text-muted">Đăng nhập để tiếp tục truy cập CyberChat.</p>
                                         </div>
 
+                                        @if (session('error'))
+                                            <div class="alert alert-danger text-center my-4" role="alert">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
+
                                         <div class="p-2 mt-5">
-                                            <form class="form-horizontal" action="index.html">
+                                            <form class="form-horizontal" action="{{ route('admin.login.post') }}"
+                                                method="POST">
+                                                @csrf
 
                                                 <div class="form-group auth-form-group-custom mb-4">
                                                     <i class="ri-user-2-line auti-custom-input-icon"></i>
-                                                    <label for="username">Email</label>
-                                                    <input type="text" class="form-control" id="username"
-                                                        placeholder="Enter username">
+                                                    <label for="email">Email</label>
+                                                    <input type="text" class="form-control" id="email" name="email"
+                                                        placeholder="Nhập email">
+                                                    @error('email')
+                                                        <div class="text-danger mt-1">
+                                                            <span style="font-size: 12px"> {{ $message }}</span>
+                                                        </div>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="form-group auth-form-group-custom mb-4">
                                                     <i class="ri-lock-2-line auti-custom-input-icon"></i>
-                                                    <label for="userpassword">Mật khẩu</label>
-                                                    <input type="password" class="form-control" id="userpassword"
-                                                        placeholder="Nhập mật khẩu">
+                                                    <label for="password">Mật khẩu</label>
+                                                    <input type="password" class="form-control" id="password"
+                                                        name="password" placeholder="Nhập mật khẩu">
+                                                    @error('password')
+                                                        <div class="text-danger mt-1">
+                                                            <span style="font-size: 12px"> {{ $message }}</span>
+                                                        </div>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customControlInline">
-                                                    <label class="custom-control-label" for="customControlInline">Duy trì
+                                                    <input type="checkbox" class="custom-control-input" id="remember"
+                                                        name="remember">
+                                                    <label class="custom-control-label" for="remember">Duy trì
                                                         đăng nhập</label>
                                                 </div>
 
@@ -59,15 +77,7 @@
                                                 </div> --}}
                                             </form>
                                         </div>
-
-                                        {{-- <div class="mt-5 text-center">
-                                            <p>Chưa có tài khoản ? <a href="auth-register.html"
-                                                    class="font-weight-medium text-primary"> Đăng ký </a> </p>
-                                            <p>© 2023 CyberChat. Thiết kế bởi CyberChat <i
-                                                    class="mdi mdi-heart text-danger"></i></p>
-                                        </div> --}}
                                     </div>
-
                                 </div>
                             </div>
                         </div>

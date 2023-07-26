@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\RoleConstants;
 use App\Http\Requests\Guest\LoginRequest;
 use App\Services\Interfaces\UserServiceInterface;
 
@@ -27,7 +28,7 @@ class AdminController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        $result = $this->userService->login($credentials, $remember);
+        $result = $this->userService->login($credentials, $remember, RoleConstants::ROLE_ADMIN);
 
         if ($result) {
             return redirect()->route('admin.dashboard');

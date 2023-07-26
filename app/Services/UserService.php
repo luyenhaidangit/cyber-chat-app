@@ -104,6 +104,7 @@ class UserService implements UserServiceInterface
                 if ($user->roles->contains('name', $role)) {
                     return true;
                 }
+                Auth::logout();
                 return false;
             }
             return false;
