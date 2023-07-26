@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-4 d-flex align-items-center">
-                        <div class="datatable-add ml-2">
+                        <div class="datatable-add">
                             <button ui-sref="add-category" type="button" class="btn btn-success waves-effect waves-light">
                                 Thêm
                                 mới</button>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-3 d-flex">
-                            <label for="search-username" class="col-form-label mr-5">Username</label>
+                            <label for="search-username" class="col-form-label mr-2">Username</label>
                             <input class="form-control" type="text" placeholder="Tìm kiếm theo username"
                                 id="search-username" value="{{ request('username') }}">
                         </div>
@@ -144,11 +144,10 @@
                         @if ($totalRecords > 0)
                             <ul class="pagination pagination-rounded">
                                 {{-- Nút trang trước --}}
-                                <li class="page-item {{ $pageIndex == 1 ? 'disabled' : '' }}">
+                                <li class="page-item {{ $pageIndex == 1 ? 'disabled' : '' }}"
+                                    @if ($pageIndex > 1) data-page-index="{{ $pageIndex - 1 }}" @endif>
                                     @if ($pageIndex > 1)
-                                        <a class="page-link"
-                                            href="{{ route('admin.user', ['pageIndex' => $pageIndex - 1, 'pageSize' => $pageSize]) }}"><i
-                                                class="mdi mdi-chevron-left"></i></a>
+                                        <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
                                     @else
                                         <span class="page-link"><i class="mdi mdi-chevron-left"></i></span>
                                     @endif
@@ -156,19 +155,17 @@
 
                                 {{-- Danh sách các trang --}}
                                 @for ($i = 1; $i <= ceil($totalRecords / $pageSize); $i++)
-                                    <li class="page-item {{ $pageIndex == $i ? 'active' : '' }}">
-                                        <a class="page-link"
-                                            href="{{ route('admin.user', ['pageIndex' => $i, 'pageSize' => $pageSize]) }}">{{ $i }}</a>
+                                    <li class="page-item {{ $pageIndex == $i ? 'active' : '' }}"
+                                        data-page-index="{{ $i }}">
+                                        <span class="page-link">{{ $i }}</span>
                                     </li>
                                 @endfor
 
                                 {{-- Nút trang sau --}}
-                                <li
-                                    class="page-item {{ $pageIndex == ceil($totalRecords / $pageSize) ? 'disabled' : '' }}">
+                                <li class="page-item {{ $pageIndex == ceil($totalRecords / $pageSize) ? 'disabled' : '' }}"
+                                    @if ($pageIndex < ceil($totalRecords / $pageSize)) data-page-index="{{ $pageIndex + 1 }}" @endif>
                                     @if ($pageIndex < ceil($totalRecords / $pageSize))
-                                        <a class="page-link"
-                                            href="{{ route('admin.user', ['pageIndex' => $pageIndex + 1, 'pageSize' => $pageSize]) }}"><i
-                                                class="mdi mdi-chevron-right"></i></a>
+                                        <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
                                     @else
                                         <span class="page-link"><i class="mdi mdi-chevron-right"></i></span>
                                     @endif
@@ -186,12 +183,25 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            //Date search
             var startDateParam = new URLSearchParams(window.location.search).get('startDate');
             var startDateValue = startDateParam ? moment(startDateParam, 'DD-MM-YYYY').format('DD MMM, YYYY') : '';
             $("#start-date").val(startDateValue);
             var endDateParam = new URLSearchParams(window.location.search).get('endDate');
             var endDateValue = endDateParam ? moment(endDateParam, 'DD-MM-YYYY').format('DD MMM, YYYY') : '';
             $("#end-date").val(endDateValue);
+
+            //Roles search
+            var rolesParam = new URLSearchParams(window.location.search).get('roles');
+            var selectedRoles = rolesParam ? rolesParam.split(',') : [];
+            $(".select2-multiple.role-select option").each(function() {
+                if (selectedRoles.includes(this.value)) {
+                    $(this).prop("selected", true);
+                }
+            });
+            $(".select2-multiple.role-select").select2();
+
+            //Filter
             $("#search-button").click(function() {
                 var username = $("#search-username").val();
                 var email = $("#search-email").val();
@@ -241,6 +251,17 @@
 
                 var updatedUrl = url.search(params).toString();
                 window.location.href = updatedUrl;
+            });
+
+            $('.page-item').on('click', function() {
+                var pageIndex = $(this).data('page-index');
+                if (pageIndex) {
+                    var url = new URI(window.location.href);
+                    var params = url.search(true);
+                    params.pageIndex = pageIndex;
+                    var updatedUrl = url.search(params).toString();
+                    window.location.href = updatedUrl;
+                }
             });
         });
     </script>

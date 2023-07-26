@@ -46,6 +46,12 @@ class AdminRepository implements AdminRepositoryInterface
                 $query->whereDate('created_at', '<=', $endDate);
             }
 
+            if (isset($conditions['roles']) && is_array($conditions['roles']) && count($conditions['roles']) > 0) {
+                $query->whereHas('roles', function ($roleQuery) use ($conditions) {
+                    $roleQuery->whereIn('role_id', $conditions['roles']);
+                });
+            }
+
             $query->orderByDesc('created_at');
 
             $totalRecords = $query->count();

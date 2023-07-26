@@ -57,10 +57,12 @@ class AdminController extends Controller
     {
         $pageIndex = $request->input('pageIndex', 1);
         $pageSize = $request->input('pageSize', 20);
+
         $conditions = [
             'username' => $request->input('username', null),
             'email' => $request->input('email', null),
             'status' => $request->has('status') ? intval($request->input('status')) : null,
+            'roles' => $request->has('roles') ? array_map('intval', explode(',', $request->input('roles'))) : [],
             'startDate' => $request->input('startDate', null),
             'endDate' => $request->input('endDate', null),
         ];
@@ -72,10 +74,7 @@ class AdminController extends Controller
             'users' => $data['data'],
             'totalRecords' => $data['total_records'],
             'pageIndex' => $data['page_index'],
-            'pageSize' => $data['page_size'],
-            'formattedDate' => function ($createdAt) {
-                return $createdAt->format('d/m/Y');
-            }
+            'pageSize' => $data['page_size']
         ]);
     }
 }
