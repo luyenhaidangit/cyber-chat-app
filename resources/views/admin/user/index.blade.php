@@ -32,31 +32,32 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-3 d-flex">
-                            <label for="example-text-input" class="col-form-label mr-5">Tên</label>
-                            <input class="form-control" type="text" placeholder="Tìm kiếm theo tên"
-                                id="example-text-input">
+                            <label for="search-username" class="col-form-label mr-5">Username</label>
+                            <input class="form-control" type="text" placeholder="Tìm kiếm theo username"
+                                id="search-username" value="{{ request('username') }}">
                         </div>
                         <div class="col-md-3 d-flex">
-                            <label for="example-text-input" class="col-form-label mr-3">Email</label>
-                            <input class="form-control" type="text" placeholder="Tìm kiếm theo email"
-                                id="example-text-input">
+                            <label for="search-email" class="col-form-label mr-3">Email</label>
+                            <input class="form-control" type="text" placeholder="Tìm kiếm theo email" id="search-email"
+                                value="{{ request('email') }}">
                         </div>
                         <div class="col-md-4 d-flex">
-                            <label for="example-text-input" class="col-form-label mr-3" style="min-width:68px">Trạng
+                            <label for="search-status" class="col-form-label mr-3" style="min-width:68px">Trạng
                                 thái</label>
-                            <select class="custom-select">
-                                <option selected="">Chọn trạng thái</option>
-                                <option value="1">Hoạt động</option>
-                                <option value="2">Ngừng hoạt động</option>
+                            <select class="custom-select" id="search-status">
+                                <option value="-1" selected="">Chọn trạng thái</option>
+                                <option value="1" @if (request('status') == '1') selected @endif>Hoạt động</option>
+                                <option value="0" @if (request('status') == '0') selected @endif>Ngừng hoạt động
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-4 d-flex">
+                        <div class="col-md-5 d-flex">
                             <label for="example-text-input" class="col-form-label mr-1" style="min-width:68px">Vai
                                 trò</label>
 
-                            <select class="select2 form-control select2-multiple" multiple="multiple"
+                            <select class="select2 form-control select2-multiple role-select" multiple="multiple"
                                 data-placeholder="Chọn vai trò">
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -64,16 +65,21 @@
                             </select>
                         </div>
 
-                        <div class="col-md-4 d-flex">
-                            <label for="example-text-input" class="col-form-label mr-1" style="min-width:68px">Ngày
+                        <div class="col-md-5 d-flex">
+                            <label for="example-text-input" class="col-form-label mr-1" style="min-width:72px">Ngày
                                 tạo</label>
                             <div>
                                 <div class="input-daterange input-group" data-provide="datepicker"
                                     data-date-format="dd M, yyyy" data-date-autoclose="true">
-                                    <input type="text" class="form-control" name="start" />
-                                    <input type="text" class="form-control" name="end" />
+                                    <input type="datetime" id="start-date" class="form-control" name="start" />
+                                    <input type="text" id="end-date" class="form-control" name="end" />
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-2 d-flex">
+                            <button id="search-button" ui-sref="add-category" type="button"
+                                class="btn btn-primary waves-effect waves-light">
+                                Tìm kiếm</button>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -88,9 +94,7 @@
                                         </div>
                                     </th>
                                     <th>Id</th>
-                                    {{-- <th>Ảnh đại diện</th> --}}
                                     <th>Email</th>
-                                    <th style="min-width: 80px">Họ tên</th>
                                     <th>Username</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày tạo</th>
@@ -110,11 +114,7 @@
                                         <td><a href="javascript: void(0);"
                                                 class="text-dark font-weight-bold">{{ $user->id }}</a>
                                         </td>
-                                        {{-- <td class="d-flex justify-content-center">
-                                            <img src="{{ $user->avatar }}" height="40" />
-                                        </td> --}}
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->full_name }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>
                                             @if ($user->status === 1)
@@ -181,4 +181,67 @@
         </div>
     </div>
     <!-- end row -->
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            var startDateParam = new URLSearchParams(window.location.search).get('startDate');
+            var startDateValue = startDateParam ? moment(startDateParam, 'DD-MM-YYYY').format('DD MMM, YYYY') : '';
+            $("#start-date").val(startDateValue);
+            var endDateParam = new URLSearchParams(window.location.search).get('endDate');
+            var endDateValue = endDateParam ? moment(endDateParam, 'DD-MM-YYYY').format('DD MMM, YYYY') : '';
+            $("#end-date").val(endDateValue);
+            $("#search-button").click(function() {
+                var username = $("#search-username").val();
+                var email = $("#search-email").val();
+                var status = $("#search-status").val();
+                if (status === '-1') {
+                    status = null;
+                }
+                var roles = $(".select2-multiple.role-select option:checked").map(function() {
+                    return this.value;
+                }).get();
+                var startDate = $("#start-date").val();
+                var endDate = $("#end-date").val();
+                if (startDate) {
+                    var startDateFormat = moment(startDate, 'DD MMM, YYYY').format(
+                        'DD-MM-YYYY');
+                }
+                if (endDate) {
+                    var endDateFormat = moment(endDate, 'DD MMM, YYYY').format('DD-MM-YYYY');
+                }
+
+                var url = new URI(window.location.href);
+                var params = url.search(true);
+
+                var newParams = {};
+
+                if (username) newParams.username = username;
+                else delete params.username;
+
+                if (email) newParams.email = email;
+                else delete params.email;
+
+                if (status) newParams.status = status;
+                else delete params.status;
+
+                if (roles.length > 0) newParams.roles = roles.join(',');
+                else delete params.roles;
+
+                if (startDate && endDate) {
+                    newParams.startDate = startDateFormat;
+                    newParams.endDate = endDateFormat;
+                } else {
+                    delete params.startDate;
+                    delete params.endDate;
+                }
+
+                params = Object.assign(params, newParams);
+
+                var updatedUrl = url.search(params).toString();
+                window.location.href = updatedUrl;
+            });
+        });
+    </script>
 @endsection

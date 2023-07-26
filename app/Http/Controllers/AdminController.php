@@ -58,9 +58,9 @@ class AdminController extends Controller
         $pageIndex = $request->input('pageIndex', 1);
         $pageSize = $request->input('pageSize', 20);
         $conditions = [
-            'name' => $request->input('name', null),
+            'username' => $request->input('username', null),
             'email' => $request->input('email', null),
-            'status' => $request->input('status', null),
+            'status' => $request->has('status') ? intval($request->input('status')) : null,
             'startDate' => $request->input('startDate', null),
             'endDate' => $request->input('endDate', null),
         ];

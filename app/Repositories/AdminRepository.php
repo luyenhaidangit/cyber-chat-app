@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Exceptions\ApiException;
+use Illuminate\Support\Carbon;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -23,8 +24,8 @@ class AdminRepository implements AdminRepositoryInterface
 
             $query = User::query();
 
-            if (isset($conditions['name'])) {
-                $query->where('name', 'like', '%' . $conditions['name'] . '%');
+            if (isset($conditions['username'])) {
+                $query->where('username', 'like', '%' . $conditions['username'] . '%');
             }
 
             if (isset($conditions['email'])) {
@@ -35,8 +36,14 @@ class AdminRepository implements AdminRepositoryInterface
                 $query->where('status', $conditions['status']);
             }
 
-            if (isset($conditions['startDate']) && isset($conditions['endDate'])) {
-                $query->whereBetween('created_at', [$conditions['startDate'], $conditions['endDate']]);
+            if (isset($conditions['startDate'])) {
+                $startDate = Carbon::createFromFormat('d-m-Y', $conditions['startDate'])->format('Y-m-d');
+                $query->whereDate('created_at', '>=', $startDate);
+            }
+
+            if (isset($conditions['endDate'])) {
+                $endDate = Carbon::createFromFormat('d-m-Y', $conditions['endDate'])->format('Y-m-d');
+                $query->whereDate('created_at', '<=', $endDate);
             }
 
             $query->orderByDesc('created_at');
