@@ -10,4 +10,5 @@ interface UserRepositoryInterface
     public function guestRegister(GuestRegisterRequest $request);
     public function update(User $model, array $data);
     public function findOneByConditions(array $conditions);
+    public function attachRole(User $model, $name);
 }

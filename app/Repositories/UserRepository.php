@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Http\Requests\Guest\GuestRegisterRequest;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Exceptions\ApiException;
@@ -57,6 +58,19 @@ class UserRepository implements UserRepositoryInterface
 
             return $query->first();
         } catch (Exception $e) {
+            throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
+        }
+    }
+    public function attachRole(User $user, $name)
+    {
+        $role = Role::where('name', $name)->first();
+        try {
+            if ($role) {
+                $user->roles()->attach($role->id);
+            } else {
+                throw new ApiException('Vai trò không tồn tại!', null, 404);
+            }
+        } catch (ApiException $e) {
             throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
         }
     }

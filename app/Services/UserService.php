@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\RoleConstants;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Http\Requests\Guest\GuestRegisterRequest;
@@ -15,7 +16,6 @@ use Exception;
 use App\Exceptions\ApiException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Constants\RoleConstants;
 
 class UserService implements UserServiceInterface
 {
@@ -37,6 +37,7 @@ class UserService implements UserServiceInterface
             $user = $this->userRepository->guestRegister($request);
 
             if ($user) {
+                $this->userRepository->attachRole($user, RoleConstants::ROLE_USER);
                 Mail::to($request->email)->send(new VerifyUserEmail($user->email, $user->email_verification_token));
             }
 
@@ -95,12 +96,12 @@ class UserService implements UserServiceInterface
         }
     }
 
-    public function login($credentials, $remember)
+    public function login($credentials, $remember, $role)
     {
         try {
             if (Auth::attempt($credentials, $remember)) {
                 $user = Auth::user();
-                if ($user->roles->contains('name', RoleConstants::ROLE_ADMIN)) {
+                if ($user->roles->contains('name', $role)) {
                     return true;
                 }
                 return false;

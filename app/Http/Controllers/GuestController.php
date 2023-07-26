@@ -14,6 +14,7 @@ use App\Http\Requests\Guest\RecoverRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Facades\UserFacade;
 use App\Exceptions\ApiException;
+use App\Constants\RoleConstants;
 
 class GuestController extends Controller
 {
@@ -38,7 +39,7 @@ class GuestController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        $result = $this->userService->login($credentials, $remember);
+        $result = $this->userService->login($credentials, $remember, RoleConstants::ROLE_USER);
 
         if ($result) {
             return redirect()->route('chat');
