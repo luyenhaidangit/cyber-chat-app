@@ -4,8 +4,16 @@ namespace App\Providers;
 
 use App\Services\UserService;
 use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\AdminServiceInterface;
+use App\Services\AdminService;
 use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\AdminRepository;
+use App\Repositories\Interfaces\AdminRepositoryInterface;
+use App\Repositories\RoleRepository;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Services\Interfaces\RoleServiceInterface;
+use App\Services\RoleService;
 use Illuminate\Support\Facades\Response;
 
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
+        $this->app->bind(AdminServiceInterface::class, AdminService::class);
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
     }
 
     /**

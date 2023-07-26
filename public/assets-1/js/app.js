@@ -67,7 +67,8 @@
         }),
         s("#sidebar-menu a").each(function () {
             var e = window.location.href.split(/[?#]/)[0];
-            this.href == e &&
+            e.includes(this.href) &&
+                // this.href == e &&
                 (s(this).addClass("active"),
                 s(this).parent().addClass("mm-active"),
                 s(this).parent().parent().addClass("mm-show"),
@@ -84,7 +85,8 @@
         }),
         s(".navbar-nav a").each(function () {
             var e = window.location.href.split(/[?#]/)[0];
-            this.href == e &&
+            // this.href == e &&
+            e.includes(this.href) &&
                 (s(this).addClass("active"),
                 s(this).parent().addClass("active"),
                 s(this).parent().parent().addClass("active"),

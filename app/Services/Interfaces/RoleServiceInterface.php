@@ -2,9 +2,9 @@
 
 namespace App\Services\Interfaces;
 
-interface AdminServiceInterface
+interface RoleServiceInterface
 {
-    public function get($pageIndex, $pageSize, $conditions);
+    public function getAll();
     // public function create($pageIndex, $pageSize);
     // public function edit($pageIndex, $pageSize);
     // public function delete($pageIndex, $pageSize);
