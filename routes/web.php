@@ -44,4 +44,8 @@ Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
         Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
         Route::get('/edit', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.edit');
     });
+    Route::group(['prefix' => 'config-destroy'], function () {
+        Route::get('/', 'App\Http\Controllers\ConfigDestroyController@index')->name('admin.config_destroy');
+        Route::get('/create', 'App\Http\Controllers\ConfigDestroyController@create')->name('admin.config_destroy.create');
+    });
 });

@@ -14,6 +14,11 @@ use App\Repositories\RoleRepository;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Services\Interfaces\RoleServiceInterface;
 use App\Services\RoleService;
+use App\Services\Interfaces\ConfigDestroyServiceInterface;
+use App\Services\ConfigDestroyService;
+use App\Repositories\ConfigDestroyRepository;
+use App\Repositories\Interfaces\ConfigDestroyRepositoryInterface;
+
 use Illuminate\Support\Facades\Response;
 
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AdminServiceInterface::class, AdminService::class);
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(ConfigDestroyRepositoryInterface::class, ConfigDestroyRepository::class);
+        $this->app->bind(ConfigDestroyServiceInterface::class, ConfigDestroyService::class);
     }
 
     /**
