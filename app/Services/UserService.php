@@ -160,4 +160,14 @@ class UserService implements UserServiceInterface
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
+
+    public function findOneByConditions($conditions)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions($conditions);
+            return $user;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
 }

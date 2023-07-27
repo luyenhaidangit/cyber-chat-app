@@ -77,4 +77,17 @@ class AdminController extends Controller
             'pageSize' => $data['page_size']
         ]);
     }
+
+    public function detailUserView($uuid)
+    {
+        // $user = 
+
+        // return view('admin.user.index', [
+        //     'roles' => $roles,
+        //     'users' => $data['data'],
+        //     'totalRecords' => $data['total_records'],
+        //     'pageIndex' => $data['page_index'],
+        //     'pageSize' => $data['page_size']
+        // ]);
+    }
 }

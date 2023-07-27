@@ -37,6 +37,7 @@ Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
     Route::get('/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'App\Http\Controllers\AdminController@listUserView')->name('admin.user');
+        Route::get('/', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.show');
         Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
         Route::get('/edit', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.edit');
     });
