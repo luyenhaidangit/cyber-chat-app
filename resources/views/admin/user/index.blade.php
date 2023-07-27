@@ -178,7 +178,8 @@
                                 <div class="dropdown mt-4 mt-sm-0">
                                     <span href="#" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                        Số bản ghi: {{ request('pageSize') }}<i class="mdi mdi-chevron-down"></i>
+                                        Số bản ghi {{ request('pageSize') ? ': ' . request('pageSize') : '' }}<i
+                                            class="mdi mdi-chevron-down"></i>
                                     </span>
 
                                     <div class="dropdown-menu">
