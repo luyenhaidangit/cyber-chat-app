@@ -170,4 +170,23 @@ class UserService implements UserServiceInterface
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
+
+    public function delete($uuid)
+    {
+        $conditions = [
+            'uuid' => $uuid
+        ];
+        try {
+            $user = $this->userRepository->findOneByConditions($conditions);
+            if ($user) {
+                $result = $this->userRepository->delete($user->id);
+                if ($result) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
 }

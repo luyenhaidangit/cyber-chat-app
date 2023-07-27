@@ -31,6 +31,11 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
+    public function notFoundView()
+    {
+        return view('admin.404');
+    }
+
     public function postLogin(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -80,14 +85,40 @@ class AdminController extends Controller
 
     public function detailUserView($uuid)
     {
-        // $user = 
+        $user = $this->userService->findOneByConditions([
+            'uuid' => $uuid
+        ]);
 
-        // return view('admin.user.index', [
-        //     'roles' => $roles,
-        //     'users' => $data['data'],
-        //     'totalRecords' => $data['total_records'],
-        //     'pageIndex' => $data['page_index'],
-        //     'pageSize' => $data['page_size']
-        // ]);
+        if ($user) {
+            return view('admin.user.detail', compact('user'));
+        } else {
+            return view('admin.404');
+        }
+    }
+
+    public function deleteUserView($uuid)
+    {
+        $user = $this->userService->findOneByConditions([
+            'uuid' => $uuid
+        ]);
+
+        if ($user) {
+            return view('admin.user.delete', compact('user'));
+        } else {
+            return view('admin.404');
+        }
+    }
+
+    public function deleteUser(Request $request)
+    {
+        dd("oke");
+        $uuid = $request->input('uuid', null);
+        $result = $this->userService->delete($uuid);
+
+        if ($result) {
+            return view('admin.user')->with('success', 'Xoá người dùng thành công!');
+        } else {
+            return back()->with('error', 'Xoá người dùng không thành công!');
+        }
     }
 }

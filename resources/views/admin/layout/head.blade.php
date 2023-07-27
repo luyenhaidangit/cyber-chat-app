@@ -16,3 +16,4 @@
 <link href="{{ asset('assets-1/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 <!-- App Css-->
 <link href="{{ asset('assets-1/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets-1/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">

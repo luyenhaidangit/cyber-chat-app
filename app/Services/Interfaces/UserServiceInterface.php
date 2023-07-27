@@ -13,5 +13,7 @@ interface UserServiceInterface
     public function logout();
     public function openLockScreen($password);
     public function recover($email);
+    public function findOneByConditions($conditions);
+    public function delete($uuid);
 
 }

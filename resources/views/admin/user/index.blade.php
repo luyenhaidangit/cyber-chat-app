@@ -127,14 +127,16 @@
                                             {{ $user->created_at->format('d/m/Y') }}
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0);" class="mr-1 text-info" data-toggle="tooltip"
-                                                data-placement="top" title="" data-original-title="Chi tiết"><i
+                                            <a href="{{ route('admin.user.detail', ['uuid' => $user->uuid]) }}"
+                                                class="mr-1 text-info" data-toggle="tooltip" data-placement="top"
+                                                title="" data-original-title="Chi tiết"><i
                                                     class="mdi mdi-eye font-size-18"></i></a>
                                             <a href="javascript:void(0);" class="mr-1 text-primary" data-toggle="tooltip"
                                                 data-placement="top" title="" data-original-title="Sửa"><i
                                                     class="mdi mdi-pencil font-size-18"></i></a>
-                                            <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip"
-                                                data-placement="top" title="" data-original-title="Xoá"><i
+                                            <a href="{{ route('admin.user.delete', ['uuid' => $user->uuid]) }}"
+                                                class="text-danger" data-toggle="tooltip" data-placement="top"
+                                                title="" data-original-title="Xoá"><i
                                                     class="mdi mdi-trash-can font-size-18"></i></a>
                                         </td>
                                     </tr>
@@ -189,6 +191,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" id="sa-params">Click
+                                me</button>
                         </div>
                     </div>
                 </div>

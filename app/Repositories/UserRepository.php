@@ -74,4 +74,17 @@ class UserRepository implements UserRepositoryInterface
             throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
         }
     }
+
+    public function delete($userId)
+    {
+        $user = $this->model->find($userId);
+
+        if (!$user) {
+            return false;
+        }
+
+        $user->delete();
+
+        return true;
+    }
 }

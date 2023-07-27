@@ -35,9 +35,12 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
     Route::post('/logout', 'App\Http\Controllers\AdminController@postLogout')->name('admin.logout.post');
     Route::get('/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
+    Route::get('/not-found', 'App\Http\Controllers\AdminController@notFoundView')->name('admin.not_found');
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'App\Http\Controllers\AdminController@listUserView')->name('admin.user');
-        Route::get('/', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.show');
+        Route::get('/detail/{uuid}', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.detail');
+        Route::get('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUserView')->name('admin.user.delete');
+        Route::delete('/delete', 'App\Http\Controllers\AdminController@deleteUser')->name('admin.user.delete.post');
         Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
         Route::get('/edit', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.edit');
     });

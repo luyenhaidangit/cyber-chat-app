@@ -11,4 +11,5 @@ interface UserRepositoryInterface
     public function update(User $model, array $data);
     public function findOneByConditions(array $conditions);
     public function attachRole(User $model, $name);
+    public function delete($userId);
 }
