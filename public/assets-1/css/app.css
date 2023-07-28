@@ -3443,3 +3443,7 @@ div.dt-button-info {
         width: 86px;
         left: -12px;
         bottom: 38px; } }
+
+.cursor-pointer{
+  cursor: pointer;
+}

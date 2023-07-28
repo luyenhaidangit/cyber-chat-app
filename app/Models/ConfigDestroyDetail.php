@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\ConfigDestroy;
 
 class ConfigDestroyDetail extends Model
 {
@@ -24,6 +25,11 @@ class ConfigDestroyDetail extends Model
         'updated_by',
         'deleted_by'
     ];
+
+    public function configDestroy()
+    {
+        return $this->belongsTo(ConfigDestroy::class, 'destroy_id');
+    }
 
     // Các trường timestamps (created_at, updated_at, deleted_at) sẽ được Laravel quản lý tự động.
 
