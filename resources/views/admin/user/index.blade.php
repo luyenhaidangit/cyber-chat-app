@@ -23,6 +23,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success text-center my-4" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="mb-4 d-flex align-items-center">
                         <div class="datatable-add">
                             <button ui-sref="add-category" type="button" class="btn btn-success waves-effect waves-light">

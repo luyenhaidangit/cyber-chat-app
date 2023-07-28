@@ -109,16 +109,14 @@ class AdminController extends Controller
         }
     }
 
-    public function deleteUser(Request $request)
+    public function deleteUser($uuid)
     {
-        dd("oke");
-        $uuid = $request->input('uuid', null);
         $result = $this->userService->delete($uuid);
 
         if ($result) {
-            return view('admin.user')->with('success', 'Xoá người dùng thành công!');
+            return redirect()->route('admin.user')->with('success', 'Xoá người dùng thành công!');
         } else {
-            return back()->with('error', 'Xoá người dùng không thành công!');
+            return back()->with('error', 'Không tìm thấy người dùng hợp lệ, xoá không thành công!');
         }
     }
 }
