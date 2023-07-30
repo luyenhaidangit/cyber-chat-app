@@ -18,9 +18,9 @@ use App\Services\Interfaces\ConfigDestroyServiceInterface;
 use App\Services\ConfigDestroyService;
 use App\Repositories\ConfigDestroyRepository;
 use App\Repositories\Interfaces\ConfigDestroyRepositoryInterface;
-
+use App\Services\Interfaces\FileServiceInterface;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Response;
-
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
         $this->app->bind(ConfigDestroyRepositoryInterface::class, ConfigDestroyRepository::class);
         $this->app->bind(ConfigDestroyServiceInterface::class, ConfigDestroyService::class);
+        $this->app->bind(FileServiceInterface::class, FileService::class);
     }
 
     /**

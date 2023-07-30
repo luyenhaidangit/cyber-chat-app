@@ -20,9 +20,11 @@ use Illuminate\Support\Facades\Auth;
 class UserService implements UserServiceInterface
 {
     protected $userRepository;
-    public function __construct(UserRepositoryInterface $userRepository)
+    protected $fileService;
+    public function __construct(UserRepositoryInterface $userRepository, FileService $fileService)
     {
         $this->userRepository = $userRepository;
+        $this->fileService = $fileService;
     }
 
     public function guestRegister(GuestRegisterRequest $request)
@@ -185,6 +187,28 @@ class UserService implements UserServiceInterface
                 }
             }
             return false;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
+
+    public function create($data)
+    {
+        try {
+            $data = array_merge($data, [
+                'email_verified_at' => Carbon::now(),
+                'password' => $data['password'],
+            ]);
+
+            $user = $this->userRepository->create($data);
+
+            if (isset($data['roles'])) {
+                foreach ($data['roles'] as $roleId) {
+                    $this->userRepository->attachRoleById($user, $roleId);
+                }
+            }
+
+            return $user;
         } catch (ApiException $e) {
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }

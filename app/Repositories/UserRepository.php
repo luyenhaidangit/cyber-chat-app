@@ -71,6 +71,15 @@ class UserRepository implements UserRepositoryInterface
                 throw new ApiException('Vai trò không tồn tại!', null, 404);
             }
         } catch (ApiException $e) {
+            dd($e->getMessage());
+            // throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
+        }
+    }
+    public function attachRoleById(User $user, $id)
+    {
+        try {
+            $user->roles()->attach($id);
+        } catch (ApiException $e) {
             throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
         }
     }
@@ -86,5 +95,20 @@ class UserRepository implements UserRepositoryInterface
         $user->delete();
 
         return true;
+    }
+
+    public function create($data)
+    {
+        $user = $this->model->create($data);
+        try {
+            if ($user) {
+                return $user;
+            } else {
+                throw new ApiException('Người dùng không tồn tại!', null, 400);
+            }
+        } catch (ApiException $e) {
+            // throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
+            throw new Exception();
+        }
     }
 }

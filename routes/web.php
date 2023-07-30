@@ -40,9 +40,10 @@ Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
         Route::get('/', 'App\Http\Controllers\AdminController@listUserView')->name('admin.user');
         Route::get('/detail/{uuid}', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.detail');
         Route::get('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUserView')->name('admin.user.delete');
-        Route::delete('/{uuid}', 'App\Http\Controllers\AdminController@deleteUser')->name('admin.user.delete.delete');
+        Route::delete('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUser')->name('admin.user.delete.delete');
         Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
-        Route::get('/edit', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.edit');
+        Route::post('/create', 'App\Http\Controllers\AdminController@postCreateUser')->name('admin.user.create.post');
+        Route::get('/edit/{uuid}', 'App\Http\Controllers\AdminController@editUserView')->name('admin.user.edit');
     });
     Route::group(['prefix' => 'config-destroy'], function () {
         Route::get('/', 'App\Http\Controllers\ConfigDestroyController@create')->name('admin.config_destroy');

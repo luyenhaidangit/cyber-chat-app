@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Constants\RoleConstants;
+use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Guest\LoginRequest;
+use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\AdminServiceInterface;
 use App\Services\Interfaces\RoleServiceInterface;
@@ -14,12 +16,14 @@ class AdminController extends Controller
     protected $userService;
     protected $adminService;
     protected $roleService;
+    protected $fileService;
 
-    public function __construct(UserServiceInterface $userService, AdminServiceInterface $adminService, RoleServiceInterface $roleService)
+    public function __construct(UserServiceInterface $userService, AdminServiceInterface $adminService, RoleServiceInterface $roleService, FileServiceInterface $fileService)
     {
         $this->userService = $userService;
         $this->adminService = $adminService;
         $this->roleService = $roleService;
+        $this->fileService = $fileService;
     }
     public function index()
     {
@@ -34,6 +38,12 @@ class AdminController extends Controller
     public function notFoundView()
     {
         return view('admin.404');
+    }
+
+    public function createUserView()
+    {
+        $roles = $this->roleService->getAll();
+        return view('admin.user.create', compact('roles'));
     }
 
     public function postLogin(LoginRequest $request)
@@ -117,6 +127,37 @@ class AdminController extends Controller
             return redirect()->route('admin.user')->with('success', 'Xoá người dùng thành công!');
         } else {
             return back()->with('error', 'Không tìm thấy người dùng hợp lệ, xoá không thành công!');
+        }
+    }
+
+    public function editUserView($uuid)
+    {
+        $user = $this->userService->findOneByConditions([
+            'uuid' => $uuid
+        ]);
+
+        if ($user) {
+            return view('admin.user.edit', compact('user'));
+        } else {
+            return view('admin.404');
+        }
+    }
+
+    public function postCreateUser(CreateUserRequest $request)
+    {
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarFileName = $this->fileService->uploadImage($avatar, 'avatar');
+            $request->merge(['avatar' => $avatarFileName]);
+        }
+
+        $data = $request->all();
+        $result = $this->userService->create($data);
+
+        if ($result) {
+            return redirect()->route('admin.user')->with('success', 'Thêm người dùng thành công!');
+        } else {
+            return back()->with('error', 'Thêm người dùng thất bại!');
         }
     }
 }

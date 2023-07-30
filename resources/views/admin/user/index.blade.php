@@ -30,9 +30,10 @@
                     @endif
                     <div class="mb-4 d-flex align-items-center">
                         <div class="datatable-add">
-                            <button ui-sref="add-category" type="button" class="btn btn-success waves-effect waves-light">
+                            <a href="{{ route('admin.user.create') }}" type="button"
+                                class="btn btn-success waves-effect waves-light">
                                 Thêm
-                                mới</button>
+                                mới</a>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -136,8 +137,9 @@
                                                 class="mr-1 text-info" data-toggle="tooltip" data-placement="top"
                                                 title="" data-original-title="Chi tiết"><i
                                                     class="mdi mdi-eye font-size-18"></i></a>
-                                            <a href="javascript:void(0);" class="mr-1 text-primary" data-toggle="tooltip"
-                                                data-placement="top" title="" data-original-title="Sửa"><i
+                                            <a href="{{ route('admin.user.edit', ['uuid' => $user->uuid]) }}"
+                                                class="mr-1 text-primary" data-toggle="tooltip" data-placement="top"
+                                                title="" data-original-title="Sửa"><i
                                                     class="mdi mdi-pencil font-size-18"></i></a>
                                             <a href="{{ route('admin.user.delete', ['uuid' => $user->uuid]) }}"
                                                 class="text-danger" data-toggle="tooltip" data-placement="top"
@@ -196,8 +198,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary waves-effect waves-light" id="sa-params">Click
-                                me</button>
                         </div>
                     </div>
                 </div>

@@ -15,5 +15,6 @@ interface UserServiceInterface
     public function recover($email);
     public function findOneByConditions($conditions);
     public function delete($uuid);
+    public function create($data);
 
 }
