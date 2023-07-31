@@ -69,7 +69,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="example-text-input" class="col-md-2 col-form-label">Ảnh đại diện</label>
-                        <input style="padding-top: 8.25px; padding-left:12px" ng-model="product.Name" name="avatar"
+                        <input style="padding-top: 8.25px; padding-left:12px" ng-model="product.Name" name="avatarFile"
                             type="file" value="">
                         @error('avatar')
                             <div class="text-danger mt-1">

@@ -132,12 +132,14 @@ class AdminController extends Controller
 
     public function editUserView($uuid)
     {
+        $roles = $this->roleService->getAll();
+
         $user = $this->userService->findOneByConditions([
             'uuid' => $uuid
         ]);
 
         if ($user) {
-            return view('admin.user.edit', compact('user'));
+            return view('admin.user.edit', compact('user', 'roles'));
         } else {
             return view('admin.404');
         }
@@ -145,13 +147,14 @@ class AdminController extends Controller
 
     public function postCreateUser(CreateUserRequest $request)
     {
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarFileName = $this->fileService->uploadImage($avatar, 'avatar');
+        if ($request->hasFile('avatarFile')) {
+            $avatar = $request->file('avatarFile');
+            $avatarFileName = $this->fileService->uploadImage($avatar, 'avatars');
             $request->merge(['avatar' => $avatarFileName]);
         }
 
         $data = $request->all();
+
         $result = $this->userService->create($data);
 
         if ($result) {

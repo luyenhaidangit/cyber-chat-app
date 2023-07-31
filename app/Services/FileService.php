@@ -17,6 +17,8 @@ class FileService implements FileServiceInterface
         // Lưu tệp ảnh vào thư mục đích
         $file->storeAs($destinationPath, $fileName);
 
-        return $fileName;
+        $url = $destinationPath . '/' . $fileName;
+
+        return $url;
     }
 }
