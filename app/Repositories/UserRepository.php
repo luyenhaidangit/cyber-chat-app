@@ -107,8 +107,25 @@ class UserRepository implements UserRepositoryInterface
                 throw new ApiException('Người dùng không tồn tại!', null, 400);
             }
         } catch (ApiException $e) {
-            // throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
             throw new Exception();
         }
+    }
+
+    public function edit(User $user, array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $user->update($data);
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), 500);
+        }
+    }
+
+    public function syncRoles(User $user, array $roles)
+    {
+        $user->roles()->sync($roles);
     }
 }

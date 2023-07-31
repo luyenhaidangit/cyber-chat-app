@@ -14,4 +14,6 @@ interface UserRepositoryInterface
     public function attachRoleById(User $user, $id);
     public function delete($userId);
     public function create($data);
+    public function edit(User $user, array $data);
+    public function syncRoles(User $user, array $roles);
 }

@@ -16,5 +16,5 @@ interface UserServiceInterface
     public function findOneByConditions($conditions);
     public function delete($uuid);
     public function create($data);
-
+    public function editUser($id, array $data);
 }

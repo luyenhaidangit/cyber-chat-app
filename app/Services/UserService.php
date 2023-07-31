@@ -213,4 +213,23 @@ class UserService implements UserServiceInterface
             throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
         }
     }
+
+    public function editUser($id, array $data)
+    {
+        $user = $this->userRepository->findOneByConditions(['id' => $id]);
+
+        if (!$user) {
+            throw new ApiException('Người dùng không tồn tại!', null, 404);
+        }
+
+        try {
+            $updatedUser = $this->userRepository->edit($user, $data);
+            if (isset($data['roles'])) {
+                $this->userRepository->syncRoles($updatedUser, $data['roles']);
+            }
+            return $updatedUser;
+        } catch (ApiException $e) {
+            throw new ApiException('Xuất hiện lỗi khi cập nhật thông tin người dùng!', $e->getMessage(), $e->getCode());
+        }
+    }
 }

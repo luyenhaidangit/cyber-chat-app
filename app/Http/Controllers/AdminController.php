@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\RoleConstants;
 use App\Http\Requests\Admin\CreateUserRequest;
+use App\Http\Requests\Admin\EditUserRequest;
 use App\Http\Requests\Guest\LoginRequest;
 use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
@@ -159,6 +160,26 @@ class AdminController extends Controller
 
         if ($result) {
             return redirect()->route('admin.user')->with('success', 'Thêm người dùng thành công!');
+        } else {
+            return back()->with('error', 'Thêm người dùng thất bại!');
+        }
+    }
+
+    public function postEditUser(EditUserRequest $request)
+    {
+        if ($request->hasFile('avatarFile')) {
+            $avatar = $request->file('avatarFile');
+            $avatarFileName = $this->fileService->uploadImage($avatar, 'avatars');
+            $request->merge(['avatar' => $avatarFileName]);
+        }
+
+        $id = $request->input('id');
+        $data = $request->all();
+
+        $result = $this->userService->editUser($id, $data);
+
+        if ($result) {
+            return redirect()->route('admin.user')->with('success', 'Sửa người dùng thành công!');
         } else {
             return back()->with('error', 'Thêm người dùng thất bại!');
         }
