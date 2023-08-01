@@ -14,6 +14,9 @@ class Permission extends Model
         'name',
         'description',
         'uuid',
+        'code',
+        'code_parent',
+        'level',
         'updated_by',
         'created_by',
     ];
@@ -21,5 +24,10 @@ class Permission extends Model
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_permissions', 'permission_id', 'role_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Permission::class, 'code_parent', 'id');
     }
 }

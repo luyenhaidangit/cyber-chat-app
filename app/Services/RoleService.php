@@ -23,4 +23,31 @@ class RoleService implements RoleServiceInterface
             throw new ApiException('Xuất hiện lỗi khi xử lý nghiệp vụ!', $e->getMessage(), $e->getCode());
         }
     }
+
+    public function editRole($id, array $data)
+    {
+        $user = $this->roleRepository->findOneByConditions(['id' => $id]);
+
+        if (!$user) {
+            throw new ApiException('Người dùng không tồn tại!', null, 404);
+        }
+
+        try {
+            $updatedUser = $this->roleRepository->update($user, $data);
+
+            return $updatedUser;
+        } catch (ApiException $e) {
+            throw new ApiException('Xuất hiện lỗi khi cập nhật thông tin người dùng!', $e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function findOneByConditions($conditions)
+    {
+        try {
+            $user = $this->roleRepository->findOneByConditions($conditions);
+            return $user;
+        } catch (ApiException $e) {
+            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        }
+    }
 }

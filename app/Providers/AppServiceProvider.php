@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\PermissionRepository;
+use App\Services\Interfaces\PermissionServiceInterface;
+use App\Services\PermissionService;
 use App\Services\UserService;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\AdminServiceInterface;
@@ -41,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ConfigDestroyRepositoryInterface::class, ConfigDestroyRepository::class);
         $this->app->bind(ConfigDestroyServiceInterface::class, ConfigDestroyService::class);
         $this->app->bind(FileServiceInterface::class, FileService::class);
+        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
+        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
     }
 
     /**

@@ -15,4 +15,7 @@
             <span style="font-size: 12px">{{ session('lock_screen') }}</span>
         </div>
     @endif
+    <div class="col-4">
+        <input class="ms-2 form-control" type="text" placeholder="Nhập nội dung chat" id="search-username" value="">
+    </div>
 @endsection

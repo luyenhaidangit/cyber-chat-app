@@ -46,6 +46,16 @@ Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
         Route::get('/edit/{uuid}', 'App\Http\Controllers\AdminController@editUserView')->name('admin.user.edit');
         Route::post('/edit', 'App\Http\Controllers\AdminController@postEditUser')->name('admin.user.edit.post');
     });
+    Route::group(['prefix' => 'roles'], function () {
+        Route::get('/', 'App\Http\Controllers\RoleController@listRoleView')->name('admin.role');
+        Route::get('/detail/{uuid}', 'App\Http\Controllers\RoleController@detailRoleView')->name('admin.role.detail');
+        Route::get('/delete/{uuid}', 'App\Http\Controllers\RoleController@deleteRoleView')->name('admin.role.delete');
+        Route::delete('/delete/{uuid}', 'App\Http\Controllers\RoleController@deleteRole')->name('admin.role.delete.delete');
+        Route::get('/create', 'App\Http\Controllers\RoleController@createRoleView')->name('admin.role.create');
+        Route::post('/create', 'App\Http\Controllers\RoleController@postCreateRole')->name('admin.role.create.post');
+        Route::get('/edit/{uuid}', 'App\Http\Controllers\RoleController@editRoleView')->name('admin.role.edit');
+        Route::post('/edit', 'App\Http\Controllers\RoleController@postEditRole')->name('admin.role.edit.post');
+    });
     Route::group(['prefix' => 'config-destroy'], function () {
         Route::get('/', 'App\Http\Controllers\ConfigDestroyController@create')->name('admin.config_destroy');
         Route::post('/create', 'App\Http\Controllers\ConfigDestroyController@saveConfigs')->name('admin.config_destroy.create.post');

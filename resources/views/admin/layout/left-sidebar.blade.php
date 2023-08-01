@@ -22,6 +22,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('admin.user') }}">Người dùng</a></li>
+                        <li><a href="{{ route('admin.role') }}">Vai trò</a></li>
                         <li><a href="{{ route('admin.config_destroy') }}">Cấu hình huỷ</a></li>
                         {{-- <li><a href="auth-register.html">Register</a></li>
                         <li><a href="auth-recoverpw.html">Recover Password</a></li>

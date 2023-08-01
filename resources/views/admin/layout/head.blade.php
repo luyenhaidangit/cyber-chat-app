@@ -17,3 +17,18 @@
 <!-- App Css-->
 <link href="{{ asset('assets-1/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets-1/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
+<style>
+    .custom-checkbox.custom-element .custom-control-input:checked~.custom-control-label::after {
+        background-image: none;
+        content: "-";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        padding: 4px;
+    }
+
+    .cursor-pointer {
+        cursor: pointer !important;
+    }
+</style>
