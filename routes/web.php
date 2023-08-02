@@ -32,19 +32,27 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
 });
 
-Route::group(['middleware' => 'user:admin', 'prefix' => 'admin'], function () {
+Route::group(['middleware' => 'permission:manage-system', 'prefix' => 'admin'], function () {
     Route::post('/logout', 'App\Http\Controllers\AdminController@postLogout')->name('admin.logout.post');
     Route::get('/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
     Route::get('/not-found', 'App\Http\Controllers\AdminController@notFoundView')->name('admin.not_found');
     Route::group(['prefix' => 'users'], function () {
-        Route::get('/', 'App\Http\Controllers\AdminController@listUserView')->name('admin.user');
-        Route::get('/detail/{uuid}', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.detail');
-        Route::get('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUserView')->name('admin.user.delete');
-        Route::delete('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUser')->name('admin.user.delete.delete');
-        Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
-        Route::post('/create', 'App\Http\Controllers\AdminController@postCreateUser')->name('admin.user.create.post');
-        Route::get('/edit/{uuid}', 'App\Http\Controllers\AdminController@editUserView')->name('admin.user.edit');
-        Route::post('/edit', 'App\Http\Controllers\AdminController@postEditUser')->name('admin.user.edit.post');
+        Route::group(['middleware' => 'permission:see-users'], function () {
+            Route::get('/', 'App\Http\Controllers\AdminController@listUserView')->name('admin.user');
+            Route::get('/detail/{uuid}', 'App\Http\Controllers\AdminController@detailUserView')->name('admin.user.detail');
+        });
+        Route::group(['middleware' => 'permission:create-user'], function () {
+            Route::get('/create', 'App\Http\Controllers\AdminController@createUserView')->name('admin.user.create');
+            Route::post('/create', 'App\Http\Controllers\AdminController@postCreateUser')->name('admin.user.create.post');
+        });
+        Route::group(['middleware' => 'permission:edit-user'], function () {
+            Route::get('/edit/{uuid}', 'App\Http\Controllers\AdminController@editUserView')->name('admin.user.edit');
+            Route::post('/edit', 'App\Http\Controllers\AdminController@postEditUser')->name('admin.user.edit.post');
+        });
+        Route::group(['middleware' => 'permission:delete-user'], function () {
+            Route::get('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUserView')->name('admin.user.delete');
+            Route::delete('/delete/{uuid}', 'App\Http\Controllers\AdminController@deleteUser')->name('admin.user.delete.delete');
+        });
     });
     Route::group(['prefix' => 'roles'], function () {
         Route::get('/', 'App\Http\Controllers\RoleController@listRoleView')->name('admin.role');

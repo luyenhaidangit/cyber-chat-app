@@ -103,7 +103,10 @@ class UserService implements UserServiceInterface
         try {
             if (Auth::attempt($credentials, $remember)) {
                 $user = Auth::user();
-                if ($user->roles->contains('name', $role)) {
+                // if ($user->roles->contains('name', $role)) {
+                //     return true;
+                // }
+                if ($user) {
                     return true;
                 }
                 Auth::logout();
@@ -197,7 +200,7 @@ class UserService implements UserServiceInterface
         try {
             $data = array_merge($data, [
                 'email_verified_at' => Carbon::now(),
-                'password' => $data['password'],
+                'password' => Hash::make($data['password']),
             ]);
 
             $user = $this->userRepository->create($data);

@@ -53,4 +53,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
+
+    public function getPermissions()
+    {
+        $permissions = collect();
+
+        // Get all the roles associated with the user
+        $roles = $this->roles()->with('permissions')->get();
+
+        // Extract and merge the permissions from each role
+        foreach ($roles as $role) {
+            $permissions = $permissions->merge($role->permissions);
+        }
+
+        return $permissions->pluck('code')->unique();
+    }
 }
