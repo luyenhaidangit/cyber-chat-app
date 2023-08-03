@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/403', 'App\Http\Controllers\ChatController@accessDeniedErrorView')->name('error.403');
+
 //Guest
+// Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/', 'App\Http\Controllers\GuestController@login')->name('login');
     Route::get('/login', 'App\Http\Controllers\GuestController@login')->name('login');
@@ -20,12 +23,13 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/admin/login', 'App\Http\Controllers\AdminController@postLogin')->name('admin.login.post');
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'permission:register-user'], function () {
     Route::group(['middleware' => 'auth_normal'], function () {
         Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
         Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
         Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
         Route::get('/chat', 'App\Http\Controllers\ChatController@index')->name('chat');
+        Route::post('/friendship/send-request-by-email', 'App\Http\Controllers\FriendshipController@sendFriendRequestByEmail');
     });
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
     Route::post('/lock-screen', 'App\Http\Controllers\GuestController@postLockScreen')->name('lock_screen.post');

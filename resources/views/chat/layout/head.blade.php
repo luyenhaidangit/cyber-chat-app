@@ -1,5 +1,6 @@
 <meta charset="utf-8" />
 <title>Test</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Doot - Responsive Chat App Template in HTML. A fully featured HTML chat messenger template in Bootstrap 5"
     name="description" />

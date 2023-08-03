@@ -9,6 +9,14 @@ class ChatController extends Controller
 {
     public function index()
     {
-        return view('chat.index');
+        $user = Auth::user();
+        $friends = $user->friends;
+
+        return view('chat.index', compact('friends'));
+    }
+
+    public function accessDeniedErrorView()
+    {
+        return view('chat.403');
     }
 }

@@ -68,4 +68,23 @@ class User extends Authenticatable
 
         return $permissions->pluck('code')->unique();
     }
+
+    public function hasRole($roleName)
+    {
+        $roles = $this->roles()->pluck('name')->toArray();
+        return in_array($roleName, $roles);
+    }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'user_id', 'friend_id')
+            ->wherePivot('status', 'accepted');
+    }
+
+    public function friendRequests()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'user_id', 'friend_id')
+            ->withPivot('status');
+    }
+
 }

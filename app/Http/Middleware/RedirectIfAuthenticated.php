@@ -24,10 +24,10 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 $userRoles = Auth::user()->roles()->pluck('name')->toArray();
-                if (in_array('user', $userRoles)) {
-                    return redirect(RouteServiceProvider::USERINDEX);
-                } else {
-                    return redirect(RouteServiceProvider::ADMININDEX);
+                foreach ($userRoles as $role) {
+                    if (array_key_exists($role, config('auth.role_redirects'))) {
+                        return redirect(config('auth.role_redirects')[$role]);
+                    }
                 }
             }
         }

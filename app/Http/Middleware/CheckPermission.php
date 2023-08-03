@@ -16,14 +16,20 @@ class CheckPermission
      */
     public function handle($request, Closure $next, ...$permissions)
     {
-        // Lấy danh sách các quyền của người dùng từ CSDL (dựa trên các bảng users, user_roles, roles, role_permissions, permissions)
-        $userPermissions = auth()->user()->getPermissions(); // Đây là phương thức tùy chỉnh bạn cần triển khai trong model User
+        if (auth()->check()) {
+            $userPermissions = auth()->user()->getPermissions();
 
-        // Kiểm tra xem người dùng có quyền truy cập vào route không
-        foreach ($permissions as $permission) {
-            if (!$userPermissions->contains($permission)) {
-                abort(403, 'Unauthorized');
+            foreach ($permissions as $permission) {
+                if (!$userPermissions->contains($permission)) {
+                    // abort(403, 'Unauthorized');
+                    return response()->view('chat.403', [], 403);
+                }
             }
+        } else {
+            if ($request->is('admin/*')) {
+                return redirect()->route('admin.login');
+            }
+            return redirect()->route('login');
         }
 
         return $next($request);
