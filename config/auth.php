@@ -111,7 +111,7 @@ return [
     'password_timeout' => 10800,
 
     'role_redirects' => [
-        'admin' => RouteServiceProvider::USERINDEX,
-        'user' => RouteServiceProvider::ADMININDEX,
+        'admin' => RouteServiceProvider::ADMININDEX,
+        'user' => RouteServiceProvider::USERINDEX,
     ],
 ];
