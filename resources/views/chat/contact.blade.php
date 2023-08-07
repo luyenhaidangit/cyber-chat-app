@@ -111,7 +111,7 @@
     </div>
 </div>
 
-@section('script')
+@section('script-contact')
     <script>
         $(document).ready(function() {
             $('.send-request-btn').click(function() {
