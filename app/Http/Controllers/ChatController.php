@@ -19,4 +19,20 @@ class ChatController extends Controller
     {
         return view('chat.403');
     }
+
+    public function searchFriendContact(Request $request)
+    {
+        $searchTerm = $request->input('name');
+
+        $user = Auth::user();
+
+        $friends = $user->friends()
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('email', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('username', 'like', '%' . $searchTerm . '%');
+            })
+            ->get();
+
+        return response()->json(['status' => true, 'data' => $friends]);
+    }
 }

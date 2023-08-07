@@ -293,25 +293,3 @@
     </div>
     <!-- End profile content -->
 </div>
-
-@section('script')
-    {{-- <script src="/node_modules/socket.io/dist/socket.js"></script> --}}
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-    <script>
-        $(function() {
-            const socket = io(); // Kết nối tới máy chủ Socket.IO
-
-            $('#form').submit(function(e) {
-                e.preventDefault();
-                const message = $('#input').val();
-                socket.emit('chat message', message); // Gửi tin nhắn lên máy chủ
-                $('#input').val('');
-                return false;
-            });
-
-            socket.on('chat message', function(message) {
-                $('#messages').append($('<li>').text(message)); // Hiển thị tin nhắn từ máy chủ
-            });
-        });
-    </script>
-@endsection

@@ -22,8 +22,8 @@
             <form>
                 <div class="input-group mb-4">
                     <input type="text" class="form-control bg-light border-0 pe-0" id="searchContact"
-                        onkeyup="searchContacts()" placeholder="Tìm kiếm liên lạc.." aria-label="Search Contacts..."
-                        aria-describedby="button-searchcontactsaddon" autocomplete="off">
+                        placeholder="Tìm kiếm liên lạc.." aria-label="Search Contacts..."
+                        aria-describedby="button-searchcontactsaddon">
                     <button class="btn btn-light" type="button" id="button-searchcontactsaddon"><i
                             class='bx bx-search align-middle'></i></button>
                 </div>
@@ -84,7 +84,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content modal-header-colored shadow-lg border-0">
             <div class="modal-header">
-                <h5 class="modal-title text-white font-size-16" id="addContact-exampleModalLabel">Tạo liên hệ</h5>
+                <h5 class="modal-title text-white font-size-16" id="addContact-exampleModalLabel">Yêu cầu kết bạn</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -95,15 +95,15 @@
                         <input type="email" class="form-control" id="addcontactemail-input" placeholder="Nhập email"
                             name="email">
                     </div>
-                    <div class="mb-0">
+                    {{-- <div class="mb-0">
                         <label for="addcontact-invitemessage-input" class="form-label">Tin nhắn</label>
                         <textarea class="form-control" id="addcontact-invitemessage-input" rows="3" placeholder="Nhập tin nhắn"
                             name="message"></textarea>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-link close-request-btn" data-bs-dismiss="modal">Đóng</button>
                 <button type="button" class="btn btn-primary send-request-btn" data-bs-dismiss="modal">Xác
                     nhận</button>
             </div>
@@ -117,34 +117,85 @@
             $('.send-request-btn').click(function() {
                 var email = $('#addcontactemail-input').val();
                 var message = $('#addcontact-invitemessage-input').val();
-                var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Lấy giá trị CSRF token
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken // Thêm CSRF token vào tiêu đề yêu cầu
+                        'X-CSRF-TOKEN': csrfToken
                     }
                 });
 
-                // Gửi dữ liệu qua route bạn đã định nghĩa trong Laravel để xử lý việc gửi email
                 $.post('/friendship/send-request-by-email', {
                     email: email,
                     message: message
                 }, function(data) {
+                    console.log(data)
                     if (data.success) {
-                        // Hiển thị thông báo thành công hoặc thực hiện hành động khác
-                        $('#addcontactemail-input').val('')
                         alert('Lời mời kết bạn đã được gửi.');
                     } else {
-                        // Hiển thị thông báo lỗi hoặc thực hiện xử lý khác
                         alert(data.message);
                     }
+                    $('#addcontactemail-input').val('');
                 }).fail(function(xhr, status, error) {
-                    // Xử lý lỗi từ phía máy chủ và hiển thị thông báo
                     var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
                     alert(errorMessage);
                     console.log(errorMessage);
                 });
+            });
 
+            $('#searchContact').on('change', function() {
+                var inputValue = $('#searchContact').val();
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                $.get('/chat/search-friend-contact', {
+                    name: inputValue
+                }, function(data) {
+                    if (data.status) {
+                        var friends = data.data;
+                        console.log(friends)
+                        var friendsList = $('.chat-list'); // Chọn danh sách bạn bè
+
+                        // Xóa bỏ danh sách bạn bè cũ (nếu có)
+                        friendsList.empty();
+
+                        // Thêm các bản ghi bạn bè vào danh sách
+                        friends.forEach(function(friend) {
+                            var listItem = $('<li>');
+                            var listItemContent = `
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 avatar-xs ms-1 me-3">
+                            <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                <i class="bx bx-file"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 overflow-hidden">
+                            <h5 class="font-size-14 mb-1"><a href="#" class="text-truncate p-0">${friend.email}</a></h5>
+                            <p class="text-muted text-truncate font-size-13 mb-0">${friend.username}</p>
+                        </div>
+                    </div>`;
+                            listItem.html(listItemContent);
+                            friendsList.append(listItem);
+                        });
+                    }
+                }).fail(function(xhr, status, error) {
+                    var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                    alert(errorMessage);
+                    console.log(errorMessage);
+                });
+                // console.log(inputValue)
+                // // Gọi API bằng jQuery.ajax() hoặc jQuery.get(), ví dụ:
+                // $.get('/search-friends', {
+                //     name: inputValue
+                // }, function(response) {
+                //     // Xử lý dữ liệu trả về từ API ở đây
+                //     console.log(response);
+                // });
             });
         });
     </script>
