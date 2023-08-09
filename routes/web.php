@@ -33,6 +33,9 @@ Route::group(['middleware' => 'permission:register-user'], function () {
         Route::get('/chat/search-friend-contact', 'App\Http\Controllers\ChatController@searchFriendContact');
         Route::post('/edit-account', 'App\Http\Controllers\ChatController@editAccount');
     });
+    Route::group(['middleware' => 'permission:see-vip-page'], function () {
+        Route::get('/vip', 'App\Http\Controllers\ChatController@viewView')->name('vip');
+    });
     Route::get('/lock-screen', 'App\Http\Controllers\GuestController@lockScreen')->name('lock_screen');
     Route::post('/lock-screen', 'App\Http\Controllers\GuestController@postLockScreen')->name('lock_screen.post');
     Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');

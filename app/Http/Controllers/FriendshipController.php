@@ -42,6 +42,13 @@ class FriendshipController extends Controller
             'status' => 'pending',
         ]);
 
-        return response()->json(['status' => true, 'message' => 'Lời mời kết bạn đã được gửi.']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Lời mời kết bạn đã được gửi.',
+            'data' => [
+                'user_id' => $user->id,
+                'friend_id' => $friend->id,
+            ]
+        ]);
     }
 }

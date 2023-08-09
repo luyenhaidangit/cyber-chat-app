@@ -15,6 +15,7 @@
                             data-bs-target="#addContact-exampleModal">
                             <i class="bx bx-plus"></i>
                         </button>
+                        <input id="user" hidden value="{{ auth()->user()->id }}">
                     </div>
                 </div>
             </div>
@@ -33,41 +34,39 @@
         <!-- end p-4 -->
 
         <div class="chat-message-list chat-group-list" data-simplebar>
-            <div class="sort-contact">
+            <div class="">
                 <ul class="list-unstyled chat-list px-3">
                     @foreach ($friends as $friend)
-                        <li>
+                        <li class="user-friend">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 avatar-xs ms-1 me-3">
                                     <div class="avatar-title bg-soft-primary text-primary rounded-circle">
-                                        <i class="bx bx-file"></i>
+                                        <img src="{{ Storage::url($friend->avatar) }}">
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h5 class="font-size-14 mb-1"><a href="#"
-                                            class="text-truncate p-0">{{ $friend->email }}</a></h5>
-                                    <p class="text-muted text-truncate font-size-13 mb-0">{{ $friend->username }}</p>
+                                    <h5 class="font-size-14 mb-0"><a href="javascript:void(0)"
+                                            class="text-truncate p-0">{{ $friend->username }}</a></h5>
                                 </div>
 
-                                {{-- <div class="flex-shrink-0 ms-3">
+                                <div class="flex-shrink-0 ms-3">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle font-size-16 text-muted px-1" href="#"
-                                            role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                        <a class="dropdown-toggle font-size-16 text-muted px-1"
+                                            href="javascript:void(0)" role="button" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                                href="#">Open <i
-                                                    class="bx bx-folder-open ms-2 text-muted"></i></a>
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                                href="#">Edit <i class="bx bx-pencil ms-2 text-muted"></i></a>
+                                            <a class="dropdown-item d-flex align-items-center justify-content-between">Sửa
+                                                <i class="bx bx-folder-open ms-2 text-muted"></i></a>
+                                            <a class="dropdown-item d-flex align-items-center justify-content-between">Chặn
+                                                <i class="bx bx-pencil ms-2 text-muted"></i></a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                                href="#">Delete <i class="bx bx-trash ms-2 text-muted"></i></a>
+                                            <a class="dropdown-item d-flex align-items-center justify-content-between">Xoá
+                                                <i class="bx bx-trash ms-2 text-muted"></i></a>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </li>
                     @endforeach
@@ -125,12 +124,16 @@
                     }
                 });
 
+                let userId = $("#user").val();
+
                 $.post('/friendship/send-request-by-email', {
                     email: email,
                     message: message
                 }, function(data) {
                     console.log(data)
                     if (data.success) {
+                        console.log(data)
+                        socket.emit('send_friend_request', userId, data?.data?.friend_id);
                         alert('Lời mời kết bạn đã được gửi.');
                     } else {
                         alert(data.message);
@@ -143,7 +146,8 @@
                 });
             });
 
-            $('#searchContact').on('change', function() {
+            $('#searchContact').on('input', function() {
+                console.log("run")
                 var inputValue = $('#searchContact').val();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -171,12 +175,11 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 avatar-xs ms-1 me-3">
                             <div class="avatar-title bg-soft-primary text-primary rounded-circle">
-                                <i class="bx bx-file"></i>
+                                <img src="/storage/${friend.full_name}">
                             </div>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
-                            <h5 class="font-size-14 mb-1"><a href="#" class="text-truncate p-0">${friend.email}</a></h5>
-                            <p class="text-muted text-truncate font-size-13 mb-0">${friend.username}</p>
+                            <h5 class="font-size-14 mb-1"><a href="javascript:void(0)" class="text-truncate p-0">${friend.username}</a></h5>
                         </div>
                     </div>`;
                             listItem.html(listItemContent);

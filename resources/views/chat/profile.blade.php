@@ -45,14 +45,14 @@
         </div>
 
         <ul id="messages"></ul>
-        <form id="form" action="">
-            <input id="input" autocomplete="off" /><button>Send</button>
-        </form>
+        <div id="form" action="">
+            <input id="input" autocomplete="off" /><button id="send">Send</button>
+        </div>
 
         <!-- End profile user -->
 
         <!-- Start user-profile-desc -->
-        <div class="p-4 profile-desc" data-simplebar>
+        <div class="p-4 profile-desc" style="height: unset !important;" data-simplebar>
             <div class="text-muted">
                 <p class="mb-4">CyberLotus sánh bước cùng cộng đồng doanh nghiệp phát triển vì nền kinh tế số Việt Nam
                     với bộ giải pháp toàn diện giúp hiện đại hóa hạ tầng,...</p>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <hr class="my-4">
+            {{-- <hr class="my-4">
 
             <div>
                 <div class="d-flex">
@@ -286,10 +286,46 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
         <!-- end user-profile-desc -->
     </div>
     <!-- End profile content -->
 </div>
+
+@section('script-profile')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+        const socket = io("http://localhost:3008", {
+            transports: ["websocket"],
+        });
+
+        let userId = $("#user").val();
+
+        socket.emit('user_connected', userId);
+
+        // Khi kết nối thành công
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        // Gửi tin nhắn khi click vào nút "Send" (sử dụng jQuery)
+        $('#send').click(function() {
+            const message = $('#input').val().trim();
+            console.log(message)
+            if (message !== '') {
+                sendMessage(message);
+                $('#input').val(''); // Xóa nội dung trong input sau khi gửi
+            }
+        });
+
+        socket.on('friend_request_received', (data) => {
+            alert("Đã nhận được tin nhắn")
+        });
+
+        function sendMessage(message) {
+            socket.emit('user_send_message', message, 1, 1);
+        }
+    </script>
+@endsection

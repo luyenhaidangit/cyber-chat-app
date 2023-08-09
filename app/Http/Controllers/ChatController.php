@@ -29,8 +29,7 @@ class ChatController extends Controller
 
         $friends = $user->friends()
             ->where(function ($query) use ($searchTerm) {
-                $query->where('email', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('username', 'like', '%' . $searchTerm . '%');
+                $query->where('username', 'like', '%' . $searchTerm . '%');
             })
             ->get();
 
@@ -39,21 +38,27 @@ class ChatController extends Controller
 
     public function editAccount(Request $request)
     {
+        // Validate input
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'full_name' => 'required|string',
+        ]);
+
         $user = Auth::user();
 
-        $email = $request->input('email');
-        $fullName = $request->input('full_name');
+        $newEmail = $validatedData['email'];
+        $newFullName = $validatedData['full_name'];
 
-        // Kiểm tra xem email mới có trùng với email của người dùng khác không
-        if ($email !== $user->email && User::where('email', $email)->exists()) {
+        // Check if the new email already exists for a different user
+        if ($newEmail !== $user->email && User::where('email', $newEmail)->exists()) {
             return response()->json(['status' => false, 'message' => 'Email đã tồn tại']);
         }
 
-        $user->email = $email;
-        $user->full_name = $fullName;
+        // Update user data
+        $user->email = $newEmail;
+        $user->full_name = $newFullName;
         $user->save();
 
         return response()->json(['status' => true, 'data' => $user]);
     }
-
 }
