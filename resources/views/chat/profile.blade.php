@@ -284,7 +284,6 @@
         socket.emit('user_connected', userId);
 
         socket.on("user_list", (users) => {
-            console.log(users)
             let userIdChat = $("#id-user-current").attr("data-user-id-current");
             console.log(userIdChat)
             var isUserOnline = users.some(function(user) {
@@ -297,18 +296,16 @@
             console.log(isUserOnline)
         });
 
-        // Khi kết nối thành công
         socket.on('connect', () => {
             console.log('Connected to server');
         });
 
-        // Gửi tin nhắn khi click vào nút "Send" (sử dụng jQuery)
         $('#send').click(function() {
             const message = $('#input').val().trim();
             console.log(message)
             if (message !== '') {
                 sendMessage(message);
-                $('#input').val(''); // Xóa nội dung trong input sau khi gửi
+                $('#input').val('');
             }
         });
 

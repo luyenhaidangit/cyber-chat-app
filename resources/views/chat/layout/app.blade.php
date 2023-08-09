@@ -876,7 +876,8 @@
                         <!-- start chat conversation -->
 
                         <div class="chat-conversation p-3 p-lg-4 " id="chat-conversation" data-simplebar>
-                            <ul class="list-unstyled chat-conversation-list" id="users-conversation">
+                            <ul class="list-unstyled chat-conversation-list" id="users-conversation-1">
+                                <!-- messages here -->
                             </ul>
                         </div>
 
@@ -999,7 +1000,100 @@
                         <!-- start chat conversation -->
 
                         <div class="chat-conversation p-3 p-lg-4" id="chat-conversation" data-simplebar>
-                            <ul class="list-unstyled chat-conversation-list" id="channel-conversation">
+                            <ul class="list-unstyled chat-conversation-list" id="channel-conversation-1">
+                                <li class="chat-list left" id="8">
+                                    <div class="conversation-list">
+                                        <div class="chat-avatar"><img src="assets/images/users/avatar-2.jpg"
+                                                alt=""></div>
+                                        <div class="user-chat-content">
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="8">
+                                                    <p class="mb-0 ctext-content">Hello...</p>
+                                                </div>
+                                            </div>
+                                            <div class="conversation-name"><small class="text-muted time"></small>
+                                                <span class="text-success check-message-icon"><i
+                                                        class="bx bx-check-double"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="chat-list left" id="3">
+                                    <div class="conversation-list">
+                                        <div class="chat-avatar"><img src="assets/images/users/avatar-2.jpg"
+                                                alt=""></div>
+                                        <div class="user-chat-content">
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="3">
+                                                    <p class="mb-0 ctext-content">Kẹc</p>
+                                                </div>
+                                                <div class="dropdown align-self-start message-box-drop"> <a
+                                                        class="dropdown-toggle" href="#" role="button"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false"> <i class="ri-more-2-fill"></i> </a>
+                                                    <div class="dropdown-menu"> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between reply-message"
+                                                            href="#" id="reply-message-0"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".replyCollapse">Reply <i
+                                                                class="bx bx-share ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#" data-bs-toggle="modal"
+                                                            data-bs-target=".forwardModal">Forward <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between copy-message"
+                                                            href="#" id="copy-message-0">Copy <i
+                                                                class="bx bx-copy text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Mark as Unread <i
+                                                                class="bx bx-message-error text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between delete-item"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash text-muted ms-2"></i></a> </div>
+                                                </div>
+                                            </div>
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="4">
+                                                    <p class="mb-0 ctext-content">Vãi chưởng.</p>
+                                                </div>
+                                                <div class="dropdown align-self-start message-box-drop"> <a
+                                                        class="dropdown-toggle" href="#" role="button"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false"> <i class="ri-more-2-fill"></i> </a>
+                                                    <div class="dropdown-menu"> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between reply-message"
+                                                            href="#" id="reply-message-0"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".replyCollapse">Reply <i
+                                                                class="bx bx-share ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#" data-bs-toggle="modal"
+                                                            data-bs-target=".forwardModal">Forward <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between copy-message"
+                                                            href="#" id="copy-message-0">Copy <i
+                                                                class="bx bx-copy text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Mark as Unread <i
+                                                                class="bx bx-message-error text-muted ms-2"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between delete-item"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash text-muted ms-2"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="conversation-name"><small class="text-muted time">10:13
+                                                    am</small> <span class="text-success check-message-icon"><i
+                                                        class="bx bx-check-double"></i></span></div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div class="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
@@ -1132,8 +1226,8 @@
                                                 <div class="swiper-slide">
                                                     <div class="text-center px-2">
                                                         <div>
-                                                            <input id="audiofile-input" type="file" class="d-none"
-                                                                accept="audio/*" multiple>
+                                                            <input id="audiofile-input" type="file"
+                                                                class="d-none" accept="audio/*" multiple>
                                                             <label for="audiofile-input"
                                                                 class="avatar-sm mx-auto stretched-link">
                                                                 <span
@@ -1229,7 +1323,8 @@
 
                     <div class="p-3 border-bottom">
                         <div class="user-profile-img">
-                            <img src="assets/images/users/avatar-2.jpg" class="profile-img rounded" alt="">
+                            <img src="assets/images/users/avatar-2.jpg" class="profile-img rounded"
+                                alt="">
                             <div class="overlay-content rounded">
                                 <div class="user-chat-nav p-2">
                                     <div class="d-flex w-100">
@@ -1245,8 +1340,8 @@
                                         </div>
                                         <div class="flex-shrink-0">
                                             <div class="dropdown">
-                                                <button class="btn nav-btn text-white dropdown-toggle" type="button"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                <button class="btn nav-btn text-white dropdown-toggle"
+                                                    type="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">
                                                     <i class='bx bx-dots-vertical-rounded'></i>
                                                 </button>

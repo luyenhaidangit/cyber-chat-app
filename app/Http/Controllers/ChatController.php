@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Conversation;
+use App\Models\UserConversation;
+use App\Models\Message;
 
 class ChatController extends Controller
 {
@@ -60,5 +63,27 @@ class ChatController extends Controller
         $user->save();
 
         return response()->json(['status' => true, 'data' => $user]);
+    }
+
+    public function getMessages(Request $request, $friendId)
+    {
+        $conversationId = UserConversation::where('user_id', 2)
+            ->whereIn('conversation_id', function ($query) use ($friendId) {
+                $query->select('conversation_id')
+                    ->from('user_conversations')
+                    ->where('user_id', $friendId);
+            })
+            ->value('conversation_id');
+
+        if ($conversationId) {
+            $messages = Message::with('sender')
+                ->where('conversation_id', $conversationId)
+                ->get();
+        }
+
+        return response()->json([
+            "status" => true,
+            "data" => $messages
+        ]);
     }
 }

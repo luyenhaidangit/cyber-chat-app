@@ -5,6 +5,7 @@
             <div class="d-flex align-items-start">
                 <div class="flex-grow-1">
                     <h4 class="mb-4">Liên lạc</h4>
+                    <input hidden id="user-auth" value="{{ auth()->user()->id }}">
                 </div>
                 <div class="flex-shrink-0">
                     <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
@@ -41,8 +42,9 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 avatar-xs ms-1 me-3">
                                     <div class="avatar-title bg-soft-primary text-primary rounded-circle">
-                                        <img data-user-{{ $friend->id }}-avatar="{{ Storage::url($friend->avatar) }}"
-                                            src="{{ Storage::url($friend->avatar) }}">
+                                        <img height="20" width="20"
+                                            data-user-{{ $friend->id }}-avatar="{{ Storage::url($friend->avatar) }}"
+                                            src="{{ Storage::url($friend->avatar) }}" />
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
@@ -209,6 +211,7 @@
                 $('#user-chat').css('display', 'block');
                 socket.emit('user_connected', userId);
 
+                let userAuthId = $("#user-auth").val();
                 let friendId = $(this).data('id');
 
                 let username = $('a[data-user-' + friendId + '-username]').data('user-' + friendId +
@@ -221,6 +224,41 @@
                 let userElements = $("[data-user-id-current]");
                 userElements.each(function() {
                     $(this).attr("data-user-id-current", friendId);
+                });
+
+                $.get('/messages/' + friendId, {}, function(data) {
+                    console.log(data)
+                    if (data.status) {
+                        let messages = data?.data;
+
+                        var conversationList = $(
+                            "#users-conversation-1");
+
+                        messages.forEach(function(message) {
+                            var chatList = `
+            <li class="chat-list ${message?.sender?.id === +userAuthId ? 'right' : 'left'}" id="${message.id}">
+            <div class="conversation-list">
+                <div class="chat-avatar"><img src="/storage/${message.sender.avatar}" alt=""></div>
+                <div class="user-chat-content">
+                    <div class="ctext-wrap">
+                        <div class="ctext-wrap-content" id="${message.id}">
+                            <p class="mb-0 ctext-content">${message.message}</p>
+                        </div>
+                    </div>
+                    <div class="conversation-name"><small class="text-muted time"></small><span class="text-success check-message-icon"><i class="bx bx-check-double"></i></span></div>
+                </div>
+            </div>
+        </li>
+    `;
+
+                            // Thêm vào danh sách cuộc trò chuyện
+                            conversationList.append(chatList);
+                        });
+                    }
+                }).fail(function(xhr, status, error) {
+                    var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                    alert(errorMessage);
+                    console.log(errorMessage);
                 });
             });
         });
