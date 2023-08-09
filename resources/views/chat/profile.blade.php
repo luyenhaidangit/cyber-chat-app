@@ -11,23 +11,6 @@
                             <div class="flex-grow-1">
                                 <h5 class="text-white mb-0">Thông tin cá nhân</h5>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="dropdown">
-                                    <button class="btn nav-btn text-white dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class='bx bx-dots-vertical-rounded'></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                            href="#">Info <i class="bx bx-info-circle ms-2 text-muted"></i></a>
-                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                            href="#">Setting <i class="bx bx-cog text-muted ms-2"></i></a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                            href="#">Help <i class="bx bx-help-circle ms-2 text-muted"></i></a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,11 +25,6 @@
 
             <h5 class="font-size-16 mb-1 text-truncate">{{ auth()->user()->username }}</h5>
             <p class="text-muted font-size-14 text-truncate mb-0">.Net Developer</p>
-        </div>
-
-        <ul id="messages"></ul>
-        <div id="form" action="">
-            <input id="input" autocomplete="off" /><button id="send">Send</button>
         </div>
 
         <!-- End profile user -->
@@ -304,6 +282,20 @@
         let userId = $("#user").val();
 
         socket.emit('user_connected', userId);
+
+        socket.on("user_list", (users) => {
+            console.log(users)
+            let userIdChat = $("#id-user-current").attr("data-user-id-current");
+            console.log(userIdChat)
+            var isUserOnline = users.some(function(user) {
+                return +user.userId === +userIdChat;
+            });
+
+            $("#status-online-current").text(isUserOnline ? "Online" : "Offline");
+            $(".chat-user-img.online .user-status").css("background-color", isUserOnline ? "#06d6a0" : "red")
+
+            console.log(isUserOnline)
+        });
 
         // Khi kết nối thành công
         socket.on('connect', () => {

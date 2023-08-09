@@ -35,18 +35,20 @@
 
         <div class="chat-message-list chat-group-list" data-simplebar>
             <div class="">
-                <ul class="list-unstyled chat-list px-3">
+                <ul id="user-friends" class="list-unstyled chat-list px-3">
                     @foreach ($friends as $friend)
-                        <li class="user-friend">
+                        <li class="user-friend" data-id="{{ $friend->id }}" data-user-{{ $friend->id }}-status="0">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 avatar-xs ms-1 me-3">
                                     <div class="avatar-title bg-soft-primary text-primary rounded-circle">
-                                        <img src="{{ Storage::url($friend->avatar) }}">
+                                        <img data-user-{{ $friend->id }}-avatar="{{ Storage::url($friend->avatar) }}"
+                                            src="{{ Storage::url($friend->avatar) }}">
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h5 class="font-size-14 mb-0"><a href="javascript:void(0)"
-                                            class="text-truncate p-0">{{ $friend->username }}</a></h5>
+                                    <h5 class="font-size-14 mb-0"><a href="javascript:void(0)" class="text-truncate p-0"
+                                            data-user-{{ $friend->id }}-username="{{ $friend->username }}">{{ $friend->username }}</a>
+                                    </h5>
                                 </div>
 
                                 <div class="flex-shrink-0 ms-3">
@@ -170,16 +172,18 @@
 
                         // Thêm các bản ghi bạn bè vào danh sách
                         friends.forEach(function(friend) {
-                            var listItem = $('<li>');
+                            var listItem = $(
+                                `<li class="user-friend" data-id="${friend.id}" data-user-${friend.id}-status="">`
+                            );
                             var listItemContent = `
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 avatar-xs ms-1 me-3">
                             <div class="avatar-title bg-soft-primary text-primary rounded-circle">
-                                <img src="/storage/${friend.full_name}">
+                                <img data-user-${friend.id}-avatar="/storage/${friend.avatar}" src="/storage/${friend.avatar}">
                             </div>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
-                            <h5 class="font-size-14 mb-1"><a href="javascript:void(0)" class="text-truncate p-0">${friend.username}</a></h5>
+                            <h5 class="font-size-14 mb-1"><a data-user-${friend.id}-username="${friend.username}" href="javascript:void(0)" class="text-truncate p-0">${friend.username}</a></h5>
                         </div>
                     </div>`;
                             listItem.html(listItemContent);
@@ -199,6 +203,25 @@
                 //     // Xử lý dữ liệu trả về từ API ở đây
                 //     console.log(response);
                 // });
+            });
+
+            $('#user-friends').on('click', '.user-friend', function() {
+                $('#user-chat').css('display', 'block');
+                socket.emit('user_connected', userId);
+
+                let friendId = $(this).data('id');
+
+                let username = $('a[data-user-' + friendId + '-username]').data('user-' + friendId +
+                    '-username');
+                let avatar = $('img[data-user-' + friendId + '-avatar]').data('user-' + friendId +
+                    '-avatar');
+
+                $(".username-user").text(username);
+                $(".avatar-user").attr('src', avatar);
+                let userElements = $("[data-user-id-current]");
+                userElements.each(function() {
+                    $(this).attr("data-user-id-current", friendId);
+                });
             });
         });
     </script>

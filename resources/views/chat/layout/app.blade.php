@@ -741,7 +741,7 @@
         <!-- end chat-leftsidebar -->
 
         <!-- Start User chat -->
-        <div class="user-chat w-100 overflow-hidden">
+        <div id="user-chat" class="user-chat w-100 overflow-hidden" style="display: none;">
             <div class="user-chat-overlay"></div>
 
             <div class="chat-content d-lg-flex">
@@ -763,13 +763,18 @@
                                                 <div
                                                     class="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3 ms-0">
                                                     <img src="assets/images/users/avatar-2.jpg"
-                                                        class="rounded-circle avatar-sm" alt="">
+                                                        class="rounded-circle avatar-sm avatar-user" alt="">
                                                     <span class="user-status"></span>
                                                 </div>
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <h6 class="text-truncate mb-0 font-size-18"><a href="#"
-                                                            class="user-profile-show text-reset">Bella Cote</a></h6>
-                                                    <p class="text-truncate text-muted mb-0"><small>Online</small></p>
+                                                            class="username-user user-profile-show text-reset">Bella
+                                                            Cote</a></h6>
+                                                    <p id="id-user-current" data-user-id-current="0"
+                                                        data-user-id-status=""
+                                                        class="text-truncate text-muted mb-0 user-id-current">
+                                                        <small id="status-online-current">Online</small>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
