@@ -6,6 +6,7 @@
                 <div class="flex-grow-1">
                     <h4 class="mb-4">Liên lạc</h4>
                     <input hidden id="user-auth" value="{{ auth()->user()->id }}">
+                    <input hidden id="user" value="{{ auth()->user()->id }}">
                 </div>
                 <div class="flex-shrink-0">
                     <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
@@ -16,7 +17,7 @@
                             data-bs-target="#addContact-exampleModal">
                             <i class="bx bx-plus"></i>
                         </button>
-                        <input id="user" hidden value="{{ auth()->user()->id }}">
+                        <input id="user-auth" hidden value="{{ Auth::id() }}">
                     </div>
                 </div>
             </div>
@@ -135,9 +136,11 @@
                     message: message
                 }, function(data) {
                     console.log(data)
-                    if (data.success) {
+                    if (data.status) {
                         console.log(data)
-                        socket.emit('send_friend_request', userId, data?.data?.friend_id);
+                        console.log("Đây là user", data?.data?.user_id)
+                        socket.emit('send_friend_request', data?.data?.user_id, data?.data
+                            ?.friend_id);
                         alert('Lời mời kết bạn đã được gửi.');
                     } else {
                         alert(data.message);
@@ -212,6 +215,7 @@
                 socket.emit('user_connected', userId);
 
                 let userAuthId = $("#user-auth").val();
+                console.log(userAuthId)
                 let friendId = $(this).data('id');
 
                 let username = $('a[data-user-' + friendId + '-username]').data('user-' + friendId +
@@ -233,6 +237,7 @@
 
                         var conversationList = $(
                             "#users-conversation-1");
+                        conversationList.empty();
 
                         messages.forEach(function(message) {
                             var chatList = `
@@ -250,8 +255,6 @@
             </div>
         </li>
     `;
-
-                            // Thêm vào danh sách cuộc trò chuyện
                             conversationList.append(chatList);
                         });
                     }

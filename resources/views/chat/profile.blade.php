@@ -285,7 +285,7 @@
 
         socket.on("user_list", (users) => {
             let userIdChat = $("#id-user-current").attr("data-user-id-current");
-            console.log(userIdChat)
+            console.log("user đang online", userIdChat)
             var isUserOnline = users.some(function(user) {
                 return +user.userId === +userIdChat;
             });
@@ -294,6 +294,44 @@
             $(".chat-user-img.online .user-status").css("background-color", isUserOnline ? "#06d6a0" : "red")
 
             console.log(isUserOnline)
+        });
+
+        socket.on("send_message_response", (data1) => {
+            console.log("day la ca 2 nhe", data1)
+            $.get('/messages/' + data1?.userId, {}, function(data) {
+                console.log(data)
+                if (data.status) {
+                    let messages = data?.data;
+                    console.log("Day laf", messages, "user la", +data?.receiverUserId)
+
+                    var conversationList = $(
+                        "#users-conversation-1");
+                    conversationList.empty();
+
+                    messages.forEach(function(message) {
+                        var chatList = `
+            <li class="chat-list ${+message?.sender?.id === +data1?.receiverUserId ? 'right' : 'left'}" id="${message.id}">
+            <div class="conversation-list">
+                <div class="chat-avatar"><img src="/storage/${message.sender.avatar}" alt=""></div>
+                <div class="user-chat-content">
+                    <div class="ctext-wrap">
+                        <div class="ctext-wrap-content" id="${message.id}">
+                            <p class="mb-0 ctext-content">${message.message}</p>
+                        </div>
+                    </div>
+                    <div class="conversation-name"><small class="text-muted time"></small><span class="text-success check-message-icon"><i class="bx bx-check-double"></i></span></div>
+                </div>
+            </div>
+        </li>
+    `;
+                        conversationList.append(chatList);
+                    });
+                }
+            }).fail(function(xhr, status, error) {
+                var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                alert(errorMessage);
+                console.log(errorMessage);
+            });
         });
 
         socket.on('connect', () => {
@@ -309,8 +347,104 @@
             }
         });
 
+        $('#send-btn').click(function() {
+            let userIdCurrent = $("#id-user-current").data("user-id-current");
+            let message = $("#chat-input-1").val();
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            $.post('/messages', {
+                "friendId": userIdCurrent,
+                "message": message
+            }, function(data) {
+                if (data.status) {
+                    console.log(data)
+                    $.get('/messages/' + userIdCurrent, {}, function(data) {
+                        console.log(data)
+                        if (data.status) {
+                            let messages = data?.data;
+
+                            var conversationList = $(
+                                "#users-conversation-1");
+                            conversationList.empty();
+                            let userAuthId = $("#user-auth").val();
+
+                            messages.forEach(function(message) {
+                                var chatList = `
+            <li class="chat-list ${message?.sender?.id === +userAuthId ? 'right' : 'left'}" id="${message.id}">
+            <div class="conversation-list">
+                <div class="chat-avatar"><img src="/storage/${message.sender.avatar}" alt=""></div>
+                <div class="user-chat-content">
+                    <div class="ctext-wrap">
+                        <div class="ctext-wrap-content" id="${message.id}">
+                            <p class="mb-0 ctext-content">${message.message}</p>
+                        </div>
+                    </div>
+                    <div class="conversation-name"><small class="text-muted time"></small><span class="text-success check-message-icon"><i class="bx bx-check-double"></i></span></div>
+                </div>
+            </div>
+        </li>
+    `;
+                                conversationList.append(chatList);
+                            });
+                            let userIdCurrent = $("#id-user-current").data("user-id-current");
+                            let userId = $('#user-auth').val();
+                            console.log("ddaay la usser", userId)
+                            console.log("ddaay la usser nhan", userIdCurrent)
+                            socket.emit('send_message_request', userId, userIdCurrent);
+                        }
+                    }).fail(function(xhr, status, error) {
+                        var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                        alert(errorMessage);
+                        console.log(errorMessage);
+                    });
+                }
+            }).fail(function(xhr, status, error) {
+                var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                alert(errorMessage);
+                console.log(errorMessage);
+            });
+            $("#chat-input-1").val('');
+        });
+
         socket.on('friend_request_received', (data) => {
-            alert("Đã nhận được tin nhắn")
+            console.log(data)
+            const shouldAccept = confirm("Bạn nhận được yêu cầu kết bạn từ user có id:", data?.senderUserId);
+
+            if (shouldAccept) {
+                console.log("Đã chấp nhận kết bạn")
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                console.log("Người chap nhan", data?.senderUserId)
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+                $.post('/friendship/accept', {
+                    "friend_id": data?.senderUserId,
+                }, function(data) {
+                    if (data.status) {
+                        console.log(data)
+                        alert("Chấp nhận kết bạn thành công")
+                    } else {
+                        console.log("Thâtgs bại chấp nhận")
+                    }
+                }).fail(function(xhr, status, error) {
+                    var errorMessage = 'Lỗi từ máy chủ: ' + xhr.responseText;
+                    alert(errorMessage);
+                    console.log(errorMessage);
+                });
+
+                // Sau khi xác nhận kết bạn, bạn có thể emit sự kiện để thông báo lại phía server
+                socket.emit('friend_request_accepted', {
+                    sender_id: data.senderUserId
+                });
+            }
+            console.log("Chưa chấp nhận kết bạn")
         });
 
         function sendMessage(message) {

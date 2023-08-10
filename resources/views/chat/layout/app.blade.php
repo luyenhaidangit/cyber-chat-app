@@ -1134,11 +1134,11 @@
                                     <div class="col">
                                         <div class="position-relative">
                                             <div class="chat-input-feedback">
-                                                Please Enter a Message
+                                                Nhập tin nhắn
                                             </div>
                                             <input autocomplete="off" type="text"
                                                 class="form-control form-control-lg chat-input" autofocus
-                                                id="chat-input" placeholder="Type your message...">
+                                                id="chat-input-1" placeholder="Nhập tin nhắn của bạn...">
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -1154,7 +1154,7 @@
                                                 </button>
                                             </div>
                                             <div class="links-list-item">
-                                                <button type="submit"
+                                                <button id="send-btn"
                                                     class="btn btn-primary btn-lg chat-send waves-effect waves-light"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target=".chat-input-collapse1.show">

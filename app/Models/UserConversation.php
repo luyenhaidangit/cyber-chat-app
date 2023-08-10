@@ -14,6 +14,7 @@ class UserConversation extends Model
         'user_id',
         'friend_id',
         'status',
+        'conversation_id'
     ];
 
     public function user()

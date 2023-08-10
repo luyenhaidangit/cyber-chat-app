@@ -33,6 +33,8 @@ Route::group(['middleware' => 'permission:register-user'], function () {
         Route::get('/chat/search-friend-contact', 'App\Http\Controllers\ChatController@searchFriendContact');
         Route::post('/edit-account', 'App\Http\Controllers\ChatController@editAccount');
         Route::get('/messages/{friendId}', 'App\Http\Controllers\ChatController@getMessages');
+        Route::post('/messages', 'App\Http\Controllers\ChatController@postMessage');
+        Route::post('/friendship/accept', 'App\Http\Controllers\ChatController@acceptFriendRequest');
     });
     Route::group(['middleware' => 'permission:see-vip-page'], function () {
         Route::get('/vip', 'App\Http\Controllers\ChatController@viewView')->name('vip');

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Friendship;
 use App\Models\Conversation;
 use App\Models\UserConversation;
 use App\Models\Message;
+use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
@@ -67,7 +69,7 @@ class ChatController extends Controller
 
     public function getMessages(Request $request, $friendId)
     {
-        $conversationId = UserConversation::where('user_id', 2)
+        $conversationId = UserConversation::where('user_id', Auth::user()->id)
             ->whereIn('conversation_id', function ($query) use ($friendId) {
                 $query->select('conversation_id')
                     ->from('user_conversations')
@@ -86,4 +88,96 @@ class ChatController extends Controller
             "data" => $messages
         ]);
     }
+
+    public function postMessage(Request $request)
+    {
+        $friendId = $request->input('friendId');
+        $message = $request->input('message');
+
+        $conversationId = UserConversation::where('user_id', Auth::user()->id)
+            ->whereIn('conversation_id', function ($query) use ($friendId) {
+                $query->select('conversation_id')
+                    ->from('user_conversations')
+                    ->where('user_id', $friendId);
+            })
+            ->value('conversation_id');
+
+        if ($conversationId) {
+            $newMessage = new Message();
+            $newMessage->user_id = Auth::user()->id;
+            $newMessage->conversation_id = $conversationId;
+            $newMessage->message = $message;
+            $newMessage->status = 1;
+            $newMessage->created_by = Auth::user()->id;
+            $newMessage->updated_by = Auth::user()->id;
+            $newMessage->uuid = Str::uuid();
+            $newMessage->save();
+        }
+
+        return response()->json([
+            "status" => true,
+            "data" => "Thành công"
+        ]);
+    }
+
+    public function acceptFriendRequest(Request $request)
+    {
+        $user = Auth::user();
+        $friendId = $request->input('friend_id');
+
+        // Kiểm tra xem có lời mời kết bạn từ người bạn này hay không
+        $friendship = Friendship::where([
+            'user_id' => $friendId,
+            'friend_id' => $user->id,
+            'status' => 'pending',
+        ])->first();
+
+        if (!$friendship) {
+            return response()->json(['message' => 'Không tìm thấy lời mời kết bạn.'], 200);
+        }
+
+        // Cập nhật status để xác nhận kết bạn
+        $friendship->update(['status' => 'accepted']);
+
+        Friendship::create([
+            'user_id' => $user->id,
+            'friend_id' => $friendId,
+            'status' => 'accepted',
+        ]);
+
+        $conversation = Conversation::create([
+            'owner_user_id' => $user->id,
+            'uuid' => Str::uuid(),
+            'name' => 'Chat Private',
+            'status' => 1,
+            'type' => 'private'
+        ]);
+
+        $conversationId = $conversation->id;
+
+        UserConversation::create([
+            'user_id' => $user->id,
+            'conversation_id' => $conversationId,
+            'status' => 1,
+            'created_by' => $user->id,
+        ]);
+
+        UserConversation::create([
+            'user_id' => $friendId,
+            'conversation_id' => $conversationId,
+            'status' => 1,
+            'created_by' => $user->id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Kết bạn thành công.',
+            'data' => [
+                'user_id' => $user->id,
+                'friend_id' => $friendId,
+            ],
+            'test' => $conversation
+        ]);
+    }
+
 }
