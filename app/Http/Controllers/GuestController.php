@@ -95,16 +95,11 @@ class GuestController extends Controller
     {
         $email = $request->input('email');
         $token = $request->input('token');
-        try {
-            $user = UserFacade::verifyEmail($email, $token);
-            if ($user && !is_null($user->email_verified_at)) {
-                return redirect()->route('login')->with('success', 'Xác nhận email thành công! Đăng nhập để tiếp tục!');
-            } else {
-                return redirect()->route('login')->with('error', 'Xác nhận thất bại! Email hoặc token không hợp lệ!');
-            }
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        $user = $this->authService->verifyEmail($email, $token);
+        if ($user && !is_null($user->email_verified_at)) {
+            return redirect()->route('login')->with('success', 'Xác nhận email thành công! Đăng nhập để tiếp tục!');
         }
+        return redirect()->route('login')->with('error', 'Xác nhận thất bại! Email hoặc token không hợp lệ!');
     }
 
     //LockScreen
