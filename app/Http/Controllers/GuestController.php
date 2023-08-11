@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
@@ -19,10 +20,12 @@ use App\Constants\RoleConstants;
 class GuestController extends Controller
 {
     protected $userService;
+    protected $authService;
 
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(UserServiceInterface $userService, AuthServiceInterface $authService)
     {
         $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     //Login
@@ -39,7 +42,7 @@ class GuestController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        $result = $this->userService->login($credentials, $remember, RoleConstants::ROLE_USER);
+        $result = $this->authService->login($credentials, $remember);
 
         if ($result) {
             return redirect()->route('chat');

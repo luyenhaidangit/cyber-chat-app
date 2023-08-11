@@ -24,6 +24,8 @@ use App\Repositories\ConfigDestroyRepository;
 use App\Repositories\Interfaces\ConfigDestroyRepositoryInterface;
 use App\Services\Interfaces\FileServiceInterface;
 use App\Services\FileService;
+use App\Services\Interfaces\AuthServiceInterface;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 
@@ -47,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FileServiceInterface::class, FileService::class);
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
     }
 
     /**

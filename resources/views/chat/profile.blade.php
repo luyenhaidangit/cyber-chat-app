@@ -19,8 +19,13 @@
 
         <div class="text-center p-3 p-lg-4 border-bottom pt-2 pt-lg-2 mt-n5 position-relative">
             <div class="mb-lg-3 mb-2">
-                <img src="{{ Storage::url(auth()->user()->avatar) }}" class="rounded-circle avatar-lg img-thumbnail"
-                    alt="">
+                @if (auth()->user()->avatar)
+                    <img src="{{ Storage::url(auth()->user()->avatar) }}" class="rounded-circle avatar-lg img-thumbnail"
+                        alt="">
+                @else
+                    <img src="{{ asset('assets-1/images/user.png') }}" class="rounded-circle avatar-lg img-thumbnail"
+                        alt="">
+                @endif
             </div>
 
             <h5 class="font-size-16 mb-1 text-truncate">{{ auth()->user()->username }}</h5>
@@ -42,7 +47,7 @@
                         <i class="bx bx-user align-middle text-muted"></i>
                     </div>
                     <div class="flex-grow-1">
-                        <p class="mb-0">{{ auth()->user()->full_name }}</p>
+                        <p class="mb-0">{{ auth()->user()->username }}</p>
                     </div>
                 </div>
 
@@ -60,7 +65,7 @@
                         <i class="bx bx-location-plus align-middle text-muted"></i>
                     </div>
                     <div class="flex-grow-1">
-                        <p class="mb-0">{{ auth()->user()->address }}</p>
+                        <p class="mb-0">{{ auth()->user()->full_name }}</p>
                     </div>
                 </div>
             </div>

@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+//Common
 Route::get('/403', 'App\Http\Controllers\ChatController@accessDeniedErrorView')->name('error.403');
 
 //Guest
-// Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'guest'], function () {
+    //Authen customer
     Route::get('/', 'App\Http\Controllers\GuestController@login')->name('login');
     Route::get('/login', 'App\Http\Controllers\GuestController@login')->name('login');
     Route::post('/login', 'App\Http\Controllers\GuestController@postLogin')->name('login.post');
@@ -18,14 +19,17 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/recover', 'App\Http\Controllers\GuestController@postRecover')->name('recover.post');
     Route::get('/reset-password', 'App\Http\Controllers\GuestController@changePassword')->name('reset_password');
     Route::post('/reset-password', 'App\Http\Controllers\GuestController@submitChangePassword')->name('reset_password.post');
+    //Authen admin
     Route::get('/admin', 'App\Http\Controllers\AdminController@login')->name('admin.login');
     Route::get('/admin/login', 'App\Http\Controllers\AdminController@login')->name('admin.login');
     Route::post('/admin/login', 'App\Http\Controllers\AdminController@postLogin')->name('admin.login.post');
 });
 
-Route::group(['middleware' => 'permission:register-user'], function () {
-    Route::group(['middleware' => 'auth_normal'], function () {
-        Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
+//Customer
+Route::group(['middleware' => 'permission:register-customer'], function () {
+    Route::group(['middleware' => 'verify_lock_screen'], function () {
+        //Authen
+        Route::post('/logout', 'App\Http\Controllers\CustomerController@postLogout')->name('logout.post');
         Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
         Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
         Route::get('/chat', 'App\Http\Controllers\ChatController@index')->name('chat');
@@ -44,6 +48,7 @@ Route::group(['middleware' => 'permission:register-user'], function () {
     Route::post('/logout', 'App\Http\Controllers\GuestController@postLogout')->name('logout.post');
 });
 
+//Admin
 Route::group(['middleware' => 'permission:manage-system', 'prefix' => 'admin'], function () {
     Route::post('/logout', 'App\Http\Controllers\AdminController@postLogout')->name('admin.logout.post');
     Route::get('/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
