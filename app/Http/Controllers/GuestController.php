@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Guest\GuestRegisterRequest;
@@ -19,10 +20,12 @@ use App\Constants\RoleConstants;
 class GuestController extends Controller
 {
     protected $userService;
+    protected $authService;
 
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(UserServiceInterface $userService, AuthServiceInterface $authService)
     {
         $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     //Login
@@ -39,7 +42,7 @@ class GuestController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        $result = $this->userService->login($credentials, $remember, RoleConstants::ROLE_USER);
+        $result = $this->authService->login($credentials, $remember);
 
         if ($result) {
             return redirect()->route('chat');
@@ -79,8 +82,12 @@ class GuestController extends Controller
 
     public function postRegister(GuestRegisterRequest $request)
     {
-        UserFacade::guestRegister($request);
-        return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng xác nhận email để tiếp tục đăng nhập!');
+        $data = $request->all();
+        $result = $this->authService->registerCustomer($data);
+        if ($result) {
+            return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng xác nhận email để tiếp tục đăng nhập!');
+        }
+        return redirect()->route('login')->with('error', 'Đăng ký thất bại! Có lỗi xảy ra!');
     }
 
     //Verify
@@ -88,16 +95,11 @@ class GuestController extends Controller
     {
         $email = $request->input('email');
         $token = $request->input('token');
-        try {
-            $user = UserFacade::verifyEmail($email, $token);
-            if ($user && !is_null($user->email_verified_at)) {
-                return redirect()->route('login')->with('success', 'Xác nhận email thành công! Đăng nhập để tiếp tục!');
-            } else {
-                return redirect()->route('login')->with('error', 'Xác nhận thất bại! Email hoặc token không hợp lệ!');
-            }
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        $user = $this->authService->verifyEmail($email, $token);
+        if ($user && !is_null($user->email_verified_at)) {
+            return redirect()->route('login')->with('success', 'Xác nhận email thành công! Đăng nhập để tiếp tục!');
         }
+        return redirect()->route('login')->with('error', 'Xác nhận thất bại! Email hoặc token không hợp lệ!');
     }
 
     //LockScreen

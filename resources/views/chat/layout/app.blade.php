@@ -5,7 +5,7 @@
     @include('chat.layout.head')
 </head>
 
-<body>
+<body class="overflow-hidden">
 
     <div class="layout-wrapper d-lg-flex">
 
@@ -101,9 +101,12 @@
                                 href="auth-changepassword.html">Change Password <i
                                     class="bx bx-lock-open text-muted ms-1"></i></a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                href="auth-logout.html">Log out <i
-                                    class="bx bx-log-out-circle text-muted ms-1"></i></a>
+                            <form action="{{ route('logout.post') }}" method="POST">
+                                @csrf
+                                <button class="dropdown-item d-flex align-items-center justify-content-between"
+                                    type="submit">Đăng xuất <i
+                                        class="bx bx-log-out-circle text-muted ms-1"></i></button>
+                            </form>
                         </div>
                     </li>
                 </ul>
@@ -726,374 +729,7 @@
                         <!-- End profile user -->
 
                         <!-- Start User profile description -->
-                        <div class="user-setting" data-simplebar>
-                            <div id="settingprofile" class="accordion accordion-flush">
-                                <div class="accordion-item">
-                                    <div class="accordion-header" id="headerpersonalinfo">
-                                        <button class="accordion-button font-size-14 fw-medium" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#personalinfo"
-                                            aria-expanded="true" aria-controls="personalinfo">
-                                            <i class="bx bxs-user text-muted me-3"></i> Personal Info
-                                        </button>
-                                    </div>
-                                    <div id="personalinfo" class="accordion-collapse collapse show"
-                                        aria-labelledby="headerpersonalinfo" data-bs-parent="#settingprofile">
-                                        <div class="accordion-body">
-                                            <div class="float-end">
-                                                <button type="button" class="btn btn-soft-primary btn-sm"><i
-                                                        class="bx bxs-pencil align-middle"></i></button>
-                                            </div>
-
-                                            <div>
-                                                <p class="text-muted mb-1">Name</p>
-                                                <h5 class="font-size-14">Adam Zampa</h5>
-                                            </div>
-
-                                            <div class="mt-4">
-                                                <p class="text-muted mb-1">Email</p>
-                                                <h5 class="font-size-14">adc@123.com</h5>
-                                            </div>
-
-                                            <div class="mt-4">
-                                                <p class="text-muted mb-1">Location</p>
-                                                <h5 class="font-size-14 mb-0">California, USA</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end personal info card -->
-
-                                <div class="accordion-item">
-                                    <div class="accordion-header" id="headerthemes">
-                                        <button class="accordion-button font-size-14 fw-medium collapsed"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#collapsethemes"
-                                            aria-expanded="false" aria-controls="collapsethemes">
-                                            <i class="bx bxs-adjust-alt text-muted me-3"></i> Themes
-                                        </button>
-                                    </div>
-                                    <div id="collapsethemes" class="accordion-collapse collapse"
-                                        aria-labelledby="headerthemes" data-bs-parent="#settingprofile">
-                                        <div class="accordion-body">
-                                            <div>
-                                                <h5 class="mb-3 font-size-11 text-muted text-uppercase">Choose Theme
-                                                    Color :</h5>
-                                                <div
-                                                    class="d-flex align-items-center flex-wrap gap-2 theme-btn-list theme-color-list">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="0" name="bgcolor-radio" id="bgcolor-radio1">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio1">
-                                                            <span
-                                                                class="avatar-title bg-primary-custom rounded-circle theme-btn bgcolor-radio1"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="1" name="bgcolor-radio" id="bgcolor-radio2">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio2">
-                                                            <span
-                                                                class="avatar-title bg-info rounded-circle theme-btn bgcolor-radio2"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="2" name="bgcolor-radio" id="bgcolor-radio4">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio4">
-                                                            <span
-                                                                class="avatar-title bg-purple rounded-circle theme-btn bgcolor-radio4"></span>
-                                                        </label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="3" name="bgcolor-radio" id="bgcolor-radio5">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio5">
-                                                            <span
-                                                                class="avatar-title bg-pink rounded-circle theme-btn bgcolor-radio5"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="4" name="bgcolor-radio" id="bgcolor-radio6">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio6">
-                                                            <span
-                                                                class="avatar-title bg-danger rounded-circle theme-btn bgcolor-radio6"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="5" name="bgcolor-radio" id="bgcolor-radio7">
-                                                        <label class="form-check-label avatar-xs"
-                                                            for="bgcolor-radio7">
-                                                            <span
-                                                                class="avatar-title bg-secondary rounded-circle theme-btn bgcolor-radio7"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-color" type="radio"
-                                                            value="6" name="bgcolor-radio" id="bgcolor-radio8"
-                                                            checked>
-                                                        <label class="form-check-label avatar-xs light-background"
-                                                            for="bgcolor-radio8">
-                                                            <span
-                                                                class="avatar-title bg-light rounded-circle theme-btn bgcolor-radio8"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mt-4 pt-2">
-                                                <h5 class="mb-3 font-size-11 text-muted text-uppercase">Choose Theme
-                                                    Image :</h5>
-                                                <div
-                                                    class="d-flex align-items-center flex-wrap gap-2 theme-btn-list theme-btn-list-img">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio1">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio1">
-                                                            <span
-                                                                class="avatar-title bg-pattern-1 rounded-circle theme-btn bgimg-radio1"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio2">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio2">
-                                                            <span
-                                                                class="avatar-title bg-pattern-2 rounded-circle theme-btn bgimg-radio2"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio3">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio3">
-                                                            <span
-                                                                class="avatar-title bg-pattern-3 rounded-circle theme-btn bgimg-radio3"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio4">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio4">
-                                                            <span
-                                                                class="avatar-title bg-pattern-4 rounded-circle theme-btn bgimg-radio4"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio5" checked>
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio5">
-                                                            <span
-                                                                class="avatar-title bg-pattern-5 rounded-circle theme-btn bgimg-radio5"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio6">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio6">
-                                                            <span
-                                                                class="avatar-title bg-pattern-6 rounded-circle theme-btn bgimg-radio6"></span>
-                                                        </label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio7">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio7">
-                                                            <span
-                                                                class="avatar-title bg-pattern-7 rounded-circle theme-btn bgimg-radio7"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio8">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio8">
-                                                            <span
-                                                                class="avatar-title bg-pattern-8 rounded-circle theme-btn bgimg-radio8"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input theme-img" type="radio"
-                                                            name="bgimg-radio" id="bgimg-radio9">
-                                                        <label class="form-check-label avatar-xs" for="bgimg-radio9">
-                                                            <span
-                                                                class="avatar-title bg-pattern-9 rounded-circle theme-btn bgimg-radio9"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <div class="accordion-header" id="privacy1">
-                                        <button class="accordion-button font-size-14 fw-medium collapsed"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#privacy"
-                                            aria-expanded="false" aria-controls="privacy">
-                                            <i class="bx bxs-lock text-muted me-3"></i>Privacy
-                                        </button>
-                                    </div>
-                                    <div id="privacy" class="accordion-collapse collapse"
-                                        aria-labelledby="privacy1" data-bs-parent="#settingprofile">
-                                        <div class="accordion-body">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item py-3 px-0 pt-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Profile photo
-                                                            </h5>
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <select class="form-select form-select-sm">
-                                                                <option value="Everyone" selected>Everyone</option>
-                                                                <option value="Selected">Selected</option>
-                                                                <option value="Nobody">Nobody</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Last seen</h5>
-
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <div class="form-check form-switch">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="privacy-lastseenSwitch" checked>
-                                                                <label class="form-check-label"
-                                                                    for="privacy-lastseenSwitch"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Status</h5>
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <select class="form-select form-select-sm">
-                                                                <option value="Everyone" selected>Everyone</option>
-                                                                <option value="Selected">Selected</option>
-                                                                <option value="Nobody">Nobody</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Read receipts
-                                                            </h5>
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <div class="form-check form-switch">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="privacy-readreceiptSwitch" checked>
-                                                                <label class="form-check-label"
-                                                                    for="privacy-readreceiptSwitch"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0 pb-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Groups</h5>
-
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <select class="form-select form-select-sm">
-                                                                <option value="Everyone" selected>Everyone</option>
-                                                                <option value="Selected">Selected</option>
-                                                                <option value="Nobody">Nobody</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end privacy card -->
-
-                                <div class="accordion-item">
-                                    <div class="accordion-header" id="headersecurity">
-                                        <button class="accordion-button font-size-14 fw-medium collapsed"
-                                            type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapsesecurity" aria-expanded="false"
-                                            aria-controls="collapsesecurity">
-                                            <i class="bx bxs-check-shield text-muted me-3"></i> Security
-                                        </button>
-                                    </div>
-                                    <div id="collapsesecurity" class="accordion-collapse collapse"
-                                        aria-labelledby="headersecurity" data-bs-parent="#settingprofile">
-                                        <div class="accordion-body">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item p-0">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="font-size-13 mb-0 text-truncate">Show security
-                                                                notification</h5>
-
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-2">
-                                                            <div class="form-check form-switch">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="security-notificationswitch">
-                                                                <label class="form-check-label"
-                                                                    for="security-notificationswitch"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end security card -->
-
-
-
-                                <div class="accordion-item">
-                                    <div class="accordion-header" id="headerhelp">
-                                        <button class="accordion-button font-size-14 fw-medium collapsed"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#collapsehelp"
-                                            aria-expanded="false" aria-controls="collapsehelp">
-                                            <i class="bx bxs-help-circle text-muted me-3"></i> Help
-                                        </button>
-                                    </div>
-                                    <div id="collapsehelp" class="accordion-collapse collapse"
-                                        aria-labelledby="headerhelp" data-bs-parent="#settingprofile">
-                                        <div class="accordion-body">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item py-3 px-0 pt-0">
-                                                    <h5 class="font-size-13 mb-0"><a href="#"
-                                                            class="text-body d-block">FAQs</a></h5>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0">
-                                                    <h5 class="font-size-13 mb-0"><a href="#"
-                                                            class="text-body d-block">Contact</a></h5>
-                                                </li>
-                                                <li class="list-group-item py-3 px-0 pb-0">
-                                                    <h5 class="font-size-13 mb-0"><a href="#"
-                                                            class="text-body d-block">Terms & Privacy policy</a></h5>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end profile-setting-accordion -->
-                        </div>
+                        @include('chat.setting')
                         <!-- End User profile description -->
                     </div>
                     <!-- Start Settings content -->
@@ -1104,13 +740,1031 @@
         </div>
         <!-- end chat-leftsidebar -->
 
+        <!-- Start User chat -->
+        <div id="user-chat" class="user-chat w-100 overflow-hidden" style="display: none;">
+            <div class="user-chat-overlay"></div>
+
+            <div class="chat-content d-lg-flex">
+                <!-- start chat conversation section -->
+                <div class="w-100 overflow-hidden position-relative">
+                    <!-- conversation user -->
+                    <div id="users-chat" class="position-relative">
+                        <div class="p-3 p-lg-4 user-chat-topbar">
+                            <div class="row align-items-center">
+                                <div class="col-sm-4 col-8">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 d-block d-lg-none me-3">
+                                            <a href="javascript: void(0);"
+                                                class="user-chat-remove font-size-18 p-1"><i
+                                                    class="bx bx-chevron-left align-middle"></i></a>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3 ms-0">
+                                                    <img src="assets/images/users/avatar-2.jpg"
+                                                        class="rounded-circle avatar-sm avatar-user" alt="">
+                                                    <span class="user-status"></span>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h6 class="text-truncate mb-0 font-size-18"><a href="#"
+                                                            class="username-user user-profile-show text-reset">Bella
+                                                            Cote</a></h6>
+                                                    <p id="id-user-current" data-user-id-current="0"
+                                                        data-user-id-status=""
+                                                        class="text-truncate text-muted mb-0 user-id-current">
+                                                        <small id="status-online-current">Online</small>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-4">
+                                    <ul class="list-inline user-chat-nav text-end mb-0">
+                                        <li class="list-inline-item">
+                                            <div class="dropdown">
+                                                <button class="btn nav-btn dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class='bx bx-search'></i>
+                                                </button>
+                                                <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg">
+                                                    <div class="search-box p-2">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search.." id="searchChatMessage">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-inline-item d-none d-lg-inline-block me-2 ms-0">
+                                            <button type="button" class="btn nav-btn" data-bs-toggle="modal"
+                                                data-bs-target=".audiocallModal">
+                                                <i class='bx bxs-phone-call'></i>
+                                            </button>
+                                        </li>
+
+                                        <li class="list-inline-item d-none d-lg-inline-block me-2 ms-0">
+                                            <button type="button" class="btn nav-btn" data-bs-toggle="modal"
+                                                data-bs-target=".videocallModal">
+                                                <i class='bx bx-video'></i>
+                                            </button>
+                                        </li>
+
+                                        <li class="list-inline-item d-none d-lg-inline-block me-2 ms-0">
+                                            <button type="button" class="btn nav-btn user-profile-show">
+                                                <i class='bx bxs-info-circle'></i>
+                                            </button>
+                                        </li>
+
+                                        <li class="list-inline-item">
+                                            <div class="dropdown">
+                                                <button class="btn nav-btn dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class='bx bx-dots-vertical-rounded'></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none user-profile-show"
+                                                        href="#">View Profile <i
+                                                            class="bx bx-user text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".audiocallModal">Audio <i
+                                                            class="bx bxs-phone-call text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".videocallModal">Video <i
+                                                            class="bx bx-video text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Archive <i
+                                                            class="bx bx-archive text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Muted <i
+                                                            class="bx bx-microphone-off text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Delete <i
+                                                            class="bx bx-trash text-muted"></i></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="alert alert-warning alert-dismissible topbar-bookmark fade show p-1 px-3 px-lg-4 pe-lg-5 pe-5"
+                                role="alert">
+                                <div class="d-flex align-items-start bookmark-tabs">
+                                    <div class="tab-list-link">
+                                        <a href="#" class="tab-links" data-bs-toggle="modal"
+                                            data-bs-target=".pinnedtabModal"><i
+                                                class="ri-pushpin-fill align-middle me-1"></i> 10 Pinned</a>
+                                    </div>
+                                    <div>
+                                        <a href="#" class="tab-links border-0 px-3" data-bs-toggle="tooltip"
+                                            data-bs-trigger="hover" data-bs-placement="bottom"
+                                            title="Add Bookmark"><i class="ri-add-fill align-middle"></i></a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+
+                        </div>
+                        <!-- end chat user head -->
+
+                        <!-- start chat conversation -->
+
+                        <div class="chat-conversation p-3 p-lg-4 " id="chat-conversation" data-simplebar>
+                            <ul class="list-unstyled chat-conversation-list" id="users-conversation-1">
+                                <!-- messages here -->
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
+                            id="copyClipBoard" role="alert">
+                            message copied
+                        </div>
+
+
+                        <!-- end chat conversation end -->
+                    </div>
+
+                    <!-- conversation group -->
+                    <div id="channel-chat" class="position-relative">
+                        <div class="p-3 p-lg-4 user-chat-topbar">
+                            <div class="row align-items-center">
+                                <div class="col-sm-4 col-8">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 d-block d-lg-none me-3">
+                                            <a href="javascript: void(0);"
+                                                class="user-chat-remove font-size-18 p-1"><i
+                                                    class="bx bx-chevron-left align-middle"></i></a>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3">
+                                                    <img src="assets/images/users/user-dummy-img.jpg"
+                                                        class="rounded-circle avatar-sm" alt="">
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h6 class="text-truncate mb-0 font-size-18"><a href="#"
+                                                            class="user-profile-show text-reset">Design Phase 2</a>
+                                                    </h6>
+                                                    <p class="text-truncate text-muted mb-0"><small>24 Members</small>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-4">
+                                    <ul class="list-inline user-chat-nav text-end mb-0">
+                                        <li class="list-inline-item">
+                                            <div class="dropdown">
+                                                <button class="btn nav-btn dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class='bx bx-search'></i>
+                                                </button>
+                                                <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg">
+                                                    <div class="search-box p-2">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search..">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-inline-item d-none d-lg-inline-block me-2 ms-0">
+                                            <button type="button" class="btn nav-btn user-profile-show">
+                                                <i class='bx bxs-info-circle'></i>
+                                            </button>
+                                        </li>
+
+                                        <li class="list-inline-item">
+                                            <div class="dropdown">
+                                                <button class="btn nav-btn dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class='bx bx-dots-vertical-rounded'></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none user-profile-show"
+                                                        href="#">View Profile <i
+                                                            class="bx bx-user text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".audiocallModal">Audio <i
+                                                            class="bx bxs-phone-call text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".videocallModal">Video <i
+                                                            class="bx bx-video text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Archive <i
+                                                            class="bx bx-archive text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Muted <i
+                                                            class="bx bx-microphone-off text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Delete <i
+                                                            class="bx bx-trash text-muted"></i></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="alert alert-warning alert-dismissible topbar-bookmark fade show p-1 px-3 px-lg-4 pe-lg-5 pe-5"
+                                role="alert">
+                                <div class="d-flex align-items-start bookmark-tabs">
+                                    <div class="tab-list-link">
+                                        <a href="#" class="tab-links" data-bs-toggle="modal"
+                                            data-bs-target=".pinnedtabModal"><i
+                                                class="ri-pushpin-fill align-middle me-1"></i> 10 Pinned</a>
+                                    </div>
+                                    <div>
+                                        <a href="#" class="tab-links border-0 px-3" data-bs-toggle="tooltip"
+                                            data-bs-trigger="hover" data-bs-placement="bottom"
+                                            title="Add Bookmark"><i class="ri-add-fill align-middle"></i></a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <!-- end chat user head -->
+
+                        <!-- start chat conversation -->
+
+                        <div class="chat-conversation p-3 p-lg-4" id="chat-conversation" data-simplebar>
+                            <ul class="list-unstyled chat-conversation-list" id="channel-conversation-1">
+                                <li class="chat-list left" id="8">
+                                    <div class="conversation-list">
+                                        <div class="chat-avatar"><img src="assets/images/users/avatar-2.jpg"
+                                                alt=""></div>
+                                        <div class="user-chat-content">
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="8">
+                                                    <p class="mb-0 ctext-content">Hello...</p>
+                                                </div>
+                                            </div>
+                                            <div class="conversation-name"><small class="text-muted time"></small>
+                                                <span class="text-success check-message-icon"><i
+                                                        class="bx bx-check-double"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="chat-list left" id="3">
+                                    <div class="conversation-list">
+                                        <div class="chat-avatar"><img src="assets/images/users/avatar-2.jpg"
+                                                alt=""></div>
+                                        <div class="user-chat-content">
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="3">
+                                                    <p class="mb-0 ctext-content">Kẹc</p>
+                                                </div>
+                                                <div class="dropdown align-self-start message-box-drop"> <a
+                                                        class="dropdown-toggle" href="#" role="button"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false"> <i class="ri-more-2-fill"></i> </a>
+                                                    <div class="dropdown-menu"> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between reply-message"
+                                                            href="#" id="reply-message-0"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".replyCollapse">Reply <i
+                                                                class="bx bx-share ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#" data-bs-toggle="modal"
+                                                            data-bs-target=".forwardModal">Forward <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between copy-message"
+                                                            href="#" id="copy-message-0">Copy <i
+                                                                class="bx bx-copy text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Mark as Unread <i
+                                                                class="bx bx-message-error text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between delete-item"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash text-muted ms-2"></i></a> </div>
+                                                </div>
+                                            </div>
+                                            <div class="ctext-wrap">
+                                                <div class="ctext-wrap-content" id="4">
+                                                    <p class="mb-0 ctext-content">Vãi chưởng.</p>
+                                                </div>
+                                                <div class="dropdown align-self-start message-box-drop"> <a
+                                                        class="dropdown-toggle" href="#" role="button"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false"> <i class="ri-more-2-fill"></i> </a>
+                                                    <div class="dropdown-menu"> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between reply-message"
+                                                            href="#" id="reply-message-0"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".replyCollapse">Reply <i
+                                                                class="bx bx-share ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#" data-bs-toggle="modal"
+                                                            data-bs-target=".forwardModal">Forward <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between copy-message"
+                                                            href="#" id="copy-message-0">Copy <i
+                                                                class="bx bx-copy text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a> <a
+                                                            class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Mark as Unread <i
+                                                                class="bx bx-message-error text-muted ms-2"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between delete-item"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash text-muted ms-2"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="conversation-name"><small class="text-muted time">10:13
+                                                    am</small> <span class="text-success check-message-icon"><i
+                                                        class="bx bx-check-double"></i></span></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
+                            id="copyClipBoardChannel" role="alert">
+                            message copied
+                        </div>
+                        <!-- end chat conversation end -->
+                    </div>
+
+                    <!-- start chat input section -->
+                    <div class="position-relative">
+                        <div class="chat-input-section p-3 p-lg-4">
+
+                            <form id="chatinput-form" enctype="multipart/form-data">
+                                <div class="row g-0 align-items-center">
+                                    <div class="file_Upload"></div>
+                                    <div class="col-auto">
+                                        <div class="chat-input-links me-md-2">
+                                            <div class="links-list-item" data-bs-toggle="tooltip"
+                                                data-bs-trigger="hover" data-bs-placement="top" title="More">
+                                                <button type="button"
+                                                    class="btn btn-link text-decoration-none btn-lg waves-effect"
+                                                    data-bs-toggle="collapse" data-bs-target="#chatinputmorecollapse"
+                                                    aria-expanded="false" aria-controls="chatinputmorecollapse">
+                                                    <i class="bx bx-dots-horizontal-rounded align-middle"></i>
+                                                </button>
+                                            </div>
+                                            <div class="links-list-item" data-bs-toggle="tooltip"
+                                                data-bs-trigger="hover" data-bs-placement="top" title="Emoji">
+                                                <button type="button"
+                                                    class="btn btn-link text-decoration-none btn-lg waves-effect emoji-btn"
+                                                    id="emoji-btn">
+                                                    <i class="bx bx-smile align-middle"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="position-relative">
+                                            <div class="chat-input-feedback">
+                                                Nhập tin nhắn
+                                            </div>
+                                            <input autocomplete="off" type="text"
+                                                class="form-control form-control-lg chat-input" autofocus
+                                                id="chat-input-1" placeholder="Nhập tin nhắn của bạn...">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="chat-input-links ms-2 gap-md-1">
+                                            <div class="links-list-item d-none d-sm-block"
+                                                data-bs-container=".chat-input-links" data-bs-toggle="popover"
+                                                data-bs-trigger="focus" data-bs-html="true" data-bs-placement="top"
+                                                data-bs-content="<div class='loader-line'><div class='line'></div><div class='line'></div><div class='line'></div><div class='line'></div><div class='line'></div></div>">
+                                                <button type="button"
+                                                    class="btn btn-link text-decoration-none btn-lg waves-effect"
+                                                    onclick="audioPermission()">
+                                                    <i class="bx bx-microphone align-middle"></i>
+                                                </button>
+                                            </div>
+                                            <div class="links-list-item">
+                                                <button id="send-btn"
+                                                    class="btn btn-primary btn-lg chat-send waves-effect waves-light"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target=".chat-input-collapse1.show">
+                                                    <i class="bx bxs-send align-middle" id="submit-btn"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="chat-input-collapse chat-input-collapse1 collapse" id="chatinputmorecollapse">
+                                <div class="card mb-0">
+                                    <div class="card-body py-3">
+                                        <!-- Swiper -->
+                                        <div class="swiper chatinput-links">
+                                            <div class="swiper-wrapper">
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2 position-relative">
+                                                        <div>
+                                                            <input id="attachedfile-input" type="file"
+                                                                class="d-none" accept=".zip,.rar,.7zip,.pdf" multiple>
+                                                            <label for="attachedfile-input"
+                                                                class="avatar-sm mx-auto stretched-link">
+                                                                <span
+                                                                    class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                    <i class="bx bx-paperclip"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase mt-3 mb-0 text-body text-truncate">
+                                                            Attached</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2">
+                                                        <div class="avatar-sm mx-auto">
+                                                            <div
+                                                                class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                <i class="bx bxs-camera"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            <a href="#" class="text-body stretched-link"
+                                                                onclick="cameraPermission()">Camera</a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2 position-relative">
+                                                        <div>
+                                                            <input id="galleryfile-input" type="file"
+                                                                class="d-none"
+                                                                accept="image/png, image/gif, image/jpeg" multiple>
+                                                            <label for="galleryfile-input"
+                                                                class="avatar-sm mx-auto stretched-link">
+                                                                <span
+                                                                    class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                    <i class="bx bx-images"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            Gallery</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2">
+                                                        <div>
+                                                            <input id="audiofile-input" type="file"
+                                                                class="d-none" accept="audio/*" multiple>
+                                                            <label for="audiofile-input"
+                                                                class="avatar-sm mx-auto stretched-link">
+                                                                <span
+                                                                    class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                    <i class="bx bx-headphone"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            Audio</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2">
+                                                        <div class="avatar-sm mx-auto">
+                                                            <div
+                                                                class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                <i class="bx bx-current-location"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            <a href="#" class="text-body stretched-link"
+                                                                onclick="getLocation()">Location</a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="swiper-slide">
+                                                    <div class="text-center px-2">
+                                                        <div class="avatar-sm mx-auto">
+                                                            <div
+                                                                class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                <i class="bx bxs-user-circle"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            <a href="#" class="text-body stretched-link"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target=".contactModal">Contacts</a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="swiper-slide d-block d-sm-none">
+                                                    <div class="text-center px-2">
+                                                        <div class="avatar-sm mx-auto">
+                                                            <div
+                                                                class="avatar-title font-size-18 bg-soft-primary text-primary rounded-circle">
+                                                                <i class="bx bx-microphone"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5
+                                                            class="font-size-11 text-uppercase text-truncate mt-3 mb-0">
+                                                            <a href="#"
+                                                                class="text-body stretched-link">Audio</a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="replyCard">
+                            <div class="card mb-0">
+                                <div class="card-body py-3">
+                                    <div class="replymessage-block mb-0 d-flex align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h5 class="conversation-name"></h5>
+                                            <p class="mb-0"></p>
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                            <button type="button" id="close_toggle"
+                                                class="btn btn-sm btn-link mt-n2 me-n3 font-size-18">
+                                                <i class="bx bx-x align-middle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end chat input section -->
+                </div>
+                <!-- end chat conversation section -->
+
+                <!-- start User profile detail sidebar -->
+                <div class="user-profile-sidebar">
+
+                    <div class="p-3 border-bottom">
+                        <div class="user-profile-img">
+                            <img src="assets/images/users/avatar-2.jpg" class="profile-img rounded"
+                                alt="">
+                            <div class="overlay-content rounded">
+                                <div class="user-chat-nav p-2">
+                                    <div class="d-flex w-100">
+                                        <div class="flex-grow-1">
+                                            <button type="button"
+                                                class="btn nav-btn text-white user-profile-show d-none d-lg-block">
+                                                <i class="bx bx-x"></i>
+                                            </button>
+                                            <button type="button"
+                                                class="btn nav-btn text-white user-profile-show d-block d-lg-none">
+                                                <i class="bx bx-left-arrow-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                            <div class="dropdown">
+                                                <button class="btn nav-btn text-white dropdown-toggle"
+                                                    type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class='bx bx-dots-vertical-rounded'></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none user-profile-show"
+                                                        href="#">View Profile <i
+                                                            class="bx bx-user text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".audiocallModal">Audio <i
+                                                            class="bx bxs-phone-call text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center d-lg-none"
+                                                        href="#" data-bs-toggle="modal"
+                                                        data-bs-target=".videocallModal">Video <i
+                                                            class="bx bx-video text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Archive <i
+                                                            class="bx bx-archive text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Muted <i
+                                                            class="bx bx-microphone-off text-muted"></i></a>
+                                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                        href="#">Delete <i
+                                                            class="bx bx-trash text-muted"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-auto p-3">
+                                    <h5 class="user-name mb-1 text-truncate">Bella Cote</h5>
+                                    <p class="font-size-14 text-truncate mb-0"><i
+                                            class="bx bxs-circle font-size-10 text-success me-1 ms-0"></i> Online</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End profile user -->
+
+                    <!-- Start user-profile-desc -->
+                    <div class="p-4 user-profile-desc" data-simplebar>
+
+                        <div class="text-center border-bottom">
+                            <div class="row">
+                                <div class="col-sm col-4">
+                                    <div class="mb-4">
+                                        <button type="button" class="btn avatar-sm p-0">
+                                            <span class="avatar-title rounded bg-light text-body">
+                                                <i class="bx bxs-message-alt-detail"></i>
+                                            </span>
+                                        </button>
+                                        <h5 class="font-size-11 text-uppercase text-muted mt-2">Message</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-4">
+                                    <div class="mb-4">
+                                        <button type="button" class="btn avatar-sm p-0 favourite-btn">
+                                            <span class="avatar-title rounded bg-light text-body">
+                                                <i class="bx bx-heart"></i>
+                                            </span>
+                                        </button>
+                                        <h5 class="font-size-11 text-uppercase text-muted mt-2">Favourite</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-4">
+                                    <div class="mb-4">
+                                        <button type="button" class="btn avatar-sm p-0" data-bs-toggle="modal"
+                                            data-bs-target=".audiocallModal">
+                                            <span class="avatar-title rounded bg-light text-body">
+                                                <i class="bx bxs-phone-call"></i>
+                                            </span>
+                                        </button>
+                                        <h5 class="font-size-11 text-uppercase text-muted mt-2">Audio</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-4">
+                                    <div class="mb-4">
+                                        <button type="button" class="btn avatar-sm p-0" data-bs-toggle="modal"
+                                            data-bs-target=".videocallModal">
+                                            <span class="avatar-title rounded bg-light text-body">
+                                                <i class="bx bx-video"></i>
+                                            </span>
+                                        </button>
+                                        <h5 class="font-size-11 text-uppercase text-muted mt-2">Video</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-4">
+                                    <div class="mb-4">
+                                        <div class="dropdown">
+                                            <button class="btn avatar-sm p-0 dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <span class="avatar-title bg-light text-body rounded">
+                                                    <i class='bx bx-dots-horizontal-rounded'></i>
+                                                </span>
+                                            </button>
+
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                    href="#">Archive <i
+                                                        class="bx bx-archive text-muted"></i></a>
+                                                <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                    href="#">Muted <i
+                                                        class="bx bx-microphone-off text-muted"></i></a>
+                                                <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                                    href="#">Delete <i class="bx bx-trash text-muted"></i></a>
+                                            </div>
+                                        </div>
+                                        <h5 class="font-size-11 text-uppercase text-muted mt-2">More</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-muted pt-4">
+                            <h5 class="font-size-11 text-uppercase">Status :</h5>
+                            <p class="mb-4">If several languages coalesce, the grammar of the resulting.</p>
+                        </div>
+
+                        <div class="pb-2">
+                            <h5 class="font-size-11 text-uppercase mb-2">Info :</h5>
+                            <div>
+                                <div class="d-flex align-items-end">
+                                    <div class="flex-grow-1">
+                                        <p class="text-muted font-size-14 mb-1">Name</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <button type="button" class="btn btn-sm btn-soft-primary">Edit</button>
+                                    </div>
+                                </div>
+                                <h5 class="font-size-14 text-truncate">Bella Cote</h5>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-muted font-size-14 mb-1">Email</p>
+                                <h5 class="font-size-14">adc@123.com</h5>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-muted font-size-14 mb-1">Location</p>
+                                <h5 class="font-size-14 mb-0">California, USA</h5>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+
+                        <div>
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <h5 class="font-size-11 text-muted text-uppercase">Group in common</h5>
+                                </div>
+                            </div>
+
+                            <ul class="list-unstyled chat-list mx-n4">
+                                <li>
+                                    <a href="javascript: void(0);">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0 avatar-xs me-2">
+                                                <span class="avatar-title rounded-circle bg-soft-light text-dark">
+                                                    #
+                                                </span>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-truncate mb-0">Landing Design</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript: void(0);">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0 avatar-xs me-2">
+                                                <span class="avatar-title rounded-circle bg-soft-light text-dark">
+                                                    #
+                                                </span>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-truncate mb-0">Design Phase 2</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div>
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <h5 class="font-size-11 text-muted text-uppercase">Media</h5>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="#" class="font-size-12 d-block mb-2">Show all</a>
+                                </div>
+                            </div>
+                            <div class="profile-media-img">
+                                <div class="media-img-list">
+                                    <a href="#">
+                                        <img src="assets/images/small/img-1.jpg" alt="media img"
+                                            class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="media-img-list">
+                                    <a href="#">
+                                        <img src="assets/images/small/img-2.jpg" alt="media img"
+                                            class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="media-img-list">
+                                    <a href="#">
+                                        <img src="assets/images/small/img-3.jpg" alt="media img"
+                                            class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="media-img-list">
+                                    <a href="#">
+                                        <img src="assets/images/small/img-4.jpg" alt="media img"
+                                            class="img-fluid">
+                                        <div class="bg-overlay">+ 15</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div>
+                            <div>
+                                <h5 class="font-size-11 text-muted text-uppercase mb-3">Attached Files</h5>
+                            </div>
+
+                            <div>
+                                <div class="card p-2 border mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 avatar-xs ms-1 me-3">
+                                            <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                                <i class="bx bx-file"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="font-size-14 text-truncate mb-1">design-phase-1-approved.pdf
+                                            </h5>
+                                            <p class="text-muted font-size-13 mb-0">12.5 MB</p>
+                                        </div>
+
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div class="d-flex gap-2">
+                                                <div>
+                                                    <a href="#" class="text-muted px-1">
+                                                        <i class="bx bxs-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <a class="dropdown-toggle text-muted px-1" href="#"
+                                                        role="button" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bx bx-dots-horizontal-rounded"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Share <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash ms-2 text-muted"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card p-2 border mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 avatar-xs ms-1 me-3">
+                                            <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                                <i class="bx bx-image"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="font-size-14 text-truncate mb-1">Image-1.jpg</h5>
+                                            <p class="text-muted font-size-13 mb-0">4.2 MB</p>
+                                        </div>
+
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div class="d-flex gap-2">
+                                                <div>
+                                                    <a href="#" class="text-muted px-1">
+                                                        <i class="bx bxs-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <a class="dropdown-toggle text-muted px-1" href="#"
+                                                        role="button" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bx bx-dots-horizontal-rounded"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Share <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash ms-2 text-muted"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card p-2 border mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 avatar-xs ms-1 me-3">
+                                            <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                                <i class="bx bx-image"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="font-size-14 text-truncate mb-1">Image-2.jpg</h5>
+                                            <p class="text-muted font-size-13 mb-0">3.1 MB</p>
+                                        </div>
+
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div class="d-flex gap-2">
+                                                <div>
+                                                    <a href="#" class="text-muted px-1">
+                                                        <i class="bx bxs-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <a class="dropdown-toggle text-muted px-1" href="#"
+                                                        role="button" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bx bx-dots-horizontal-rounded"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Share <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash ms-2 text-muted"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card p-2 border mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 avatar-xs ms-1 me-3">
+                                            <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                                <i class="bx bx-file"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="font-size-14 text-truncate mb-1">Landing-A.zip</h5>
+                                            <p class="text-muted font-size-13 mb-0">6.7 MB</p>
+                                        </div>
+
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div class="d-flex gap-2">
+                                                <div>
+                                                    <a href="#" class="text-muted px-1">
+                                                        <i class="bx bxs-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <a class="dropdown-toggle text-muted px-1" href="#"
+                                                        role="button" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bx bx-dots-horizontal-rounded"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Share <i
+                                                                class="bx bx-share-alt ms-2 text-muted"></i></a>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Bookmark <i
+                                                                class="bx bx-bookmarks text-muted ms-2"></i></a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                                            href="#">Delete <i
+                                                                class="bx bx-trash ms-2 text-muted"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end user-profile-desc -->
+                </div>
+                <!-- end User profile detail sidebar -->
+            </div>
+            <!-- end user chat content -->
+        </div>
+        <!-- End User chat -->
+
         {{-- @yield('content') --}}
 
     </div>
     <!-- end  layout wrapper -->
 
     @include('chat.layout.script')
-    @yield('script')
+    @yield('script-profile')
+    @yield('script-contact')
+    @yield('script-setting')
 
 </body>
 

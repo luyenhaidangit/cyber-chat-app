@@ -15,7 +15,7 @@ class FileService implements FileServiceInterface
         $fileName = 'avatar_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
 
         // Lưu tệp ảnh vào thư mục đích
-        $file->storeAs($destinationPath, $fileName);
+        $file->storeAs('public/' . $destinationPath, $fileName);
 
         $url = $destinationPath . '/' . $fileName;
 
