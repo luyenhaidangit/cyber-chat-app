@@ -37,14 +37,13 @@
         </div>
 
         <div class="mb-3">
-            <label for="userpassword" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="userpassword" name="password" placeholder="Nhập mật khẩu"
-                required>
-            @error('password')
-                <div class="text-danger mt-1">
-                    <span style="font-size: 12px"> {{ $message }}</span>
-                </div>
-            @enderror
+            <label for="password" class="form-label">Mật khẩu</label>
+            <div class="position-relative auth-pass-inputgroup mb-3">
+                <input type="password" class="form-control pe-5" placeholder="Nhập mật khẩu" id="password-input"
+                    name="password">
+                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button"
+                    id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+            </div>
         </div>
 
         <div class="mb-4">

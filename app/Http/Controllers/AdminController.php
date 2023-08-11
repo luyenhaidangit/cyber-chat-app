@@ -10,6 +10,7 @@ use App\Services\Interfaces\FileServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\AdminServiceInterface;
 use App\Services\Interfaces\RoleServiceInterface;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -18,13 +19,14 @@ class AdminController extends Controller
     protected $adminService;
     protected $roleService;
     protected $fileService;
-
-    public function __construct(UserServiceInterface $userService, AdminServiceInterface $adminService, RoleServiceInterface $roleService, FileServiceInterface $fileService)
+    protected $authService;
+    public function __construct(UserServiceInterface $userService, AdminServiceInterface $adminService, RoleServiceInterface $roleService, FileServiceInterface $fileService, AuthServiceInterface $authService)
     {
         $this->userService = $userService;
         $this->adminService = $adminService;
         $this->roleService = $roleService;
         $this->fileService = $fileService;
+        $this->authService = $authService;
     }
     public function index()
     {
@@ -51,7 +53,7 @@ class AdminController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        $result = $this->userService->login($credentials, $remember, RoleConstants::ROLE_ADMIN);
+        $result = $this->authService->login($credentials, $remember);
 
         if ($result) {
             return redirect()->route('admin.dashboard');
