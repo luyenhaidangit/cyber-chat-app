@@ -2,25 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\AuthServiceInterface;
 
 class CustomerController extends Controller
 {
-    protected $userService;
-    public function __construct(UserServiceInterface $userService)
+    protected $authService;
+    public function __construct(AuthServiceInterface $authService)
     {
-        $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     public function postLogout()
     {
-        $this->userService->logout();
-        if (session('lock_screen')) {
-            session(['lock_screen' => false]);
-        }
-        session()->invalidate();
-        session()->regenerateToken();
-
+        $this->authService->logout();
         return redirect()->route('logout');
     }
 }

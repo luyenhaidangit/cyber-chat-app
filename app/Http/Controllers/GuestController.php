@@ -82,8 +82,12 @@ class GuestController extends Controller
 
     public function postRegister(GuestRegisterRequest $request)
     {
-        UserFacade::guestRegister($request);
-        return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng xác nhận email để tiếp tục đăng nhập!');
+        $data = $request->all();
+        $result = $this->authService->registerCustomer($data);
+        if ($result) {
+            return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng xác nhận email để tiếp tục đăng nhập!');
+        }
+        return redirect()->route('login')->with('error', 'Đăng ký thất bại! Có lỗi xảy ra!');
     }
 
     //Verify

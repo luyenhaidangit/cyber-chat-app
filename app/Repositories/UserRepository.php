@@ -77,11 +77,7 @@ class UserRepository implements UserRepositoryInterface
     }
     public function attachRoleById(User $user, $id)
     {
-        try {
-            $user->roles()->attach($id);
-        } catch (ApiException $e) {
-            throw new ApiException('Xuất hiện lỗi khi thao tác dữ liệu!', $e->getMessage(), $e->getCode());
-        }
+        $user->roles()->attach($id);
     }
 
     public function delete($userId)
@@ -99,16 +95,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function create($data)
     {
-        $user = $this->model->create($data);
-        try {
-            if ($user) {
-                return $user;
-            } else {
-                throw new ApiException('Người dùng không tồn tại!', null, 400);
-            }
-        } catch (ApiException $e) {
-            throw new Exception();
-        }
+        return $this->model->create($data);
     }
 
     public function edit(User $user, array $data)

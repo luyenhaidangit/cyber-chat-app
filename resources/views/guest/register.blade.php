@@ -8,6 +8,15 @@
     <form class="needs-validation" novalidate action="{{ route('register') }}" method="POST">
         @csrf
         <div class="mb-3">
+            <label for="full_name" class="form-label">Họ và tên</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Nhập họ và tên" required>
+            @error('full_name')
+                <div class="text-danger mt-1">
+                    <span style="font-size: 12px"> {{ $message }}</span>
+                </div>
+            @enderror
+        </div>
+        <div class="mb-3">
             <label for="useremail" class="form-label">Email</label>
             <input type="email" class="form-control" id="useremail" name="email" placeholder="Nhập email" required>
             @error('email')
