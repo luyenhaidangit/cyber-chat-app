@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants\RoleConstants;
 use App\Constants\StatusConstants;
 use App\Exceptions\CyberException;
+use App\Mail\ForgotPasswordUserEmail;
 use App\Mail\VerifyUserEmail;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Str;
@@ -78,5 +79,65 @@ class AuthService implements AuthServiceInterface
         } catch (CyberException $e) {
             return $e;
         }
+    }
+    public function recover($email)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verification_token' => Str::random(40)
+                ]);
+
+                Mail::to($email)->send(new ForgotPasswordUserEmail($user->email, $user->email_verification_token));
+
+            } else {
+                throw new CyberException('Lỗi không thể tìm thấy người dùng!');
+            }
+            return true;
+        } catch (CyberException $e) {
+            return $e;
+        }
+    }
+    public function resetPassword($email, $token, $password)
+    {
+        try {
+            $user = $this->userRepository->findOneByConditions([
+                'email' => $email,
+                'email_verification_token' => $token,
+            ]);
+
+            if ($user) {
+                $this->userRepository->update($user, [
+                    'email_verification_token' => null,
+                    'password' => Hash::make($password),
+                    'email_verified_at' => $user->email_verified_at ?: Carbon::now()
+                ]);
+            } else {
+                throw new CyberException('Lỗi không thể tìm thấy người dùng!');
+            }
+
+            return $user;
+        } catch (CyberException $e) {
+            return $e;
+        }
+    }
+
+    public function changePassword($old_password, $new_password)
+    {
+        $user = $this->userRepository->findOneByConditions(['id' => Auth::user()->id]);
+
+        if (!Hash::check($old_password, $user->password)) {
+            return false;
+        }
+
+        $this->userRepository->update($user, [
+            'password' => Hash::make($new_password)
+        ]);
+
+        return true;
     }
 }

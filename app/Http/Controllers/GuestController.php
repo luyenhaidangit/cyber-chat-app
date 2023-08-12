@@ -142,15 +142,11 @@ class GuestController extends Controller
     public function postRecover(RecoverRequest $request)
     {
         $email = $request->input('email');
-        try {
-            $result = $this->userService->recover($email);
-            if ($result) {
-                return redirect()->route('recover')->with('success', 'Yêu cầu quên mật khẩu thành công, truy cập đường dẫn tại email gửi đến!');
-            } else {
-                return redirect()->route('recover')->with('error', 'Yêu cầu quên mật khẩu thất bại, có lỗi xảy ra!');
-            }
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        $result = $this->authService->recover($email);
+        if ($result) {
+            return redirect()->route('recover')->with('success', 'Yêu cầu quên mật khẩu thành công, truy cập đường dẫn tại email gửi đến!');
+        } else {
+            return redirect()->route('recover')->with('error', 'Yêu cầu quên mật khẩu thất bại, có lỗi xảy ra!');
         }
     }
     //Change password
@@ -167,16 +163,12 @@ class GuestController extends Controller
         $email = $request->input('email');
         $token = $request->input('token');
         $password = $request->input('password');
-        try {
-            $user = UserFacade::resetPassword($email, $token, $password);
-            if ($user) {
-                return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công, đăng nhập để tiếp tục!');
-            } else {
-                return redirect()->route('reset_password')->with('error', 'Đổi mật khẩu thất bại, thử lại!');
-            }
 
-        } catch (ApiException $e) {
-            throw new ApiException($e->getData(), $e->getStatus(), $e->getCode(), $e->getMessage());
+        $user = $this->authService->resetPassword($email, $token, $password);
+        if ($user) {
+            return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công, đăng nhập để tiếp tục!');
+        } else {
+            return redirect()->route('reset_password')->with('error', 'Đổi mật khẩu thất bại, thử lại!');
         }
     }
 }

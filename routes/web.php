@@ -29,10 +29,11 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'permission:register-customer'], function () {
     Route::group(['middleware' => 'verify_lock_screen'], function () {
         //Authen
-        Route::post('/logout', 'App\Http\Controllers\CustomerController@postLogout')->name('logout.post');
-        Route::get('/change-password', 'App\Http\Controllers\GuestController@changePassword')->name('change_password');
-        Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
         Route::get('/chat', 'App\Http\Controllers\ChatController@index')->name('chat');
+        Route::post('/logout', 'App\Http\Controllers\ChatController@postLogout')->name('logout.post');
+        Route::get('/change-password', 'App\Http\Controllers\ChatController@renderChangePasswordPage')->name('customer.change_password');
+        Route::post('/change-password', 'App\Http\Controllers\ChatController@submitChangePassword')->name('customer.change_password.post');
+        Route::post('/request-lock-screen', 'App\Http\Controllers\GuestController@requestLockScreen')->name('request_lock_screen');
         Route::post('/friendship/send-request-by-email', 'App\Http\Controllers\FriendshipController@sendFriendRequestByEmail');
         Route::get('/chat/search-friend-contact', 'App\Http\Controllers\ChatController@searchFriendContact');
         Route::post('/edit-account', 'App\Http\Controllers\ChatController@editAccount');

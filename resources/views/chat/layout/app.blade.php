@@ -98,7 +98,7 @@
                                 id="pills-setting-tab" data-bs-toggle="pill" href="#pills-setting"
                                 role="tab">Setting <i class="bx bx-cog text-muted ms-1"></i></a>
                             <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                href="auth-changepassword.html">Change Password <i
+                                href="{{ route('customer.change_password') }}">Đổi mật khẩu<i
                                     class="bx bx-lock-open text-muted ms-1"></i></a>
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout.post') }}" method="POST">

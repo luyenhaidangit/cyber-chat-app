@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Chat\ChangePasswordRequest;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -13,12 +15,48 @@ use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
+    protected $authService;
+    public function __construct(AuthServiceInterface $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    //Index
     public function index()
     {
         $user = Auth::user();
         $friends = $user->friends;
 
         return view('chat.index', compact('friends'));
+    }
+
+    //Logout
+    public function postLogout()
+    {
+        $this->authService->logout();
+        return redirect()->route('logout');
+    }
+
+    //Change password
+    public function renderChangePasswordPage()
+    {
+        $data = [
+            'title' => 'Thay đổi mật khẩu'
+        ];
+        return view('chat.change-password')->with($data);
+    }
+    public function submitChangePassword(ChangePasswordRequest $request)
+    {
+        $old_password = $request->input('old_password');
+        $new_password = $request->input('new_password');
+
+        $result = $this->authService->changePassword($old_password, $new_password);
+
+        if ($result === true) {
+            return redirect()->route('chat');
+        } else {
+            return redirect()->back()->with('error', 'Mật khẩu cũ không chính xác!');
+        }
     }
 
     public function accessDeniedErrorView()
@@ -179,5 +217,4 @@ class ChatController extends Controller
             'test' => $conversation
         ]);
     }
-
 }

@@ -16,27 +16,17 @@
     </div>
     <form action="{{ route('reset_password.post') }}" method="POST">
         @csrf
-        {{-- <div class="mb-3">
-            <label for="oldpassword-input" class="form-label">Mật Khẩu Cũ</label>
-            <input type="password" class="form-control" id="oldpassword-input" name="old_password"
-                placeholder="Nhập Mật Khẩu Cũ">
-        </div> --}}
         <input type="hidden" name="email" value="{{ request('email') }}">
         <input type="hidden" name="token" value="{{ request('token') }}">
         <div class="mb-3">
             <label for="password" class="form-label">Mật Khẩu Mới</label>
             <div class="position-relative auth-pass-inputgroup mb-3">
-                <input type="password" class="form-control pe-5" placeholder="Nhập Mật Khẩu Mới" id="password"
+                <input type="password" class="form-control pe-5" placeholder="Nhập Mật Khẩu Mới" id="password-input"
                     name="password">
                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button"
                     id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
             </div>
         </div>
-        {{-- <div class="mb-3">
-            <label for="confirmpassword-input" class="form-label">Xác Nhận Mật Khẩu Mới</label>
-            <input type="password" class="form-control" id="confirmpassword-input" name="confirm_password"
-                placeholder="Nhập Xác Nhận Mật Khẩu Mới">
-        </div> --}}
 
         <div class="text-center mt-4">
             <div class="row">

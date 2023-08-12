@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class Role extends Model
 {
@@ -14,18 +13,10 @@ class Role extends Model
         'name',
         'description',
         'uuid',
+        'level',
         'updated_by',
         'created_by',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->uuid = Uuid::uuid4()->toString();
-        });
-    }
 
     public function users()
     {
