@@ -10,4 +10,5 @@ interface AuthServiceInterface
     public function verifyEmail($email, $token);
     public function recover($email);
     public function resetPassword($email, $token, $password);
+    public function changePassword($old_password, $new_password);
 }

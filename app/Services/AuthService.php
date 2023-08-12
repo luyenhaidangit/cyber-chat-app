@@ -125,4 +125,19 @@ class AuthService implements AuthServiceInterface
             return $e;
         }
     }
+
+    public function changePassword($old_password, $new_password)
+    {
+        $user = $this->userRepository->findOneByConditions(['id' => Auth::user()->id]);
+
+        if (!Hash::check($old_password, $user->password)) {
+            return false;
+        }
+
+        $this->userRepository->update($user, [
+            'password' => Hash::make($new_password)
+        ]);
+
+        return true;
+    }
 }
